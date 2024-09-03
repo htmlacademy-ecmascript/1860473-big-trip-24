@@ -338,7 +338,7 @@ function createItemListTemplate() {
           </ul>`);
 }
 
-export default class NewItemList {
+export default class ItemListView {
   getTemplate() {
     return createItemListTemplate();
   }

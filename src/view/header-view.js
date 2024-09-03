@@ -15,7 +15,7 @@ function createHeaderTopBlockTemplate() {
     </section>`);
 }
 
-export default class HeaderTopBlock {
+export default class HeaderView {
   getTemplate() {
     return createHeaderTopBlockTemplate();
   }

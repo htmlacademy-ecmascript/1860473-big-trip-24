@@ -16,7 +16,7 @@ const createFilterEventsTemplate = () => `
   </form>
 `;
 
-export default class NewFilterEvent {
+export default class FilterView {
   getTemplate() {
     return createFilterEventsTemplate();
   }

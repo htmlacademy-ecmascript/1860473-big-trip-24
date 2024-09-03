@@ -15,7 +15,7 @@ const createSortBlockItemTemplate = (e) => `
   </div>
 `;
 
-export default class NewSortBlockView {
+export default class SortView {
   getTemplate() {
     return createSortBlockTemplate();
   }

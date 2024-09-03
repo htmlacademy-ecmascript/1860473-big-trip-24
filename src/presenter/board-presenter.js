@@ -1,18 +1,16 @@
-import NewItemList from '../view/item-list.js';
-import EditPoint from '../view/edit-point.js';
-import AddNewPoint from '../view/add-new-point.js';
+import ItemListView from '../view/item-list-view.js';
+import SortView from '../view/sort-view.js';
 import {render} from '../render.js';
 
+
 export default class BoardPresenter {
-  NewItemListComponent = new NewItemList();
-  EditPointComponent = new EditPoint();
-  AddNewPointComponent = new AddNewPoint();
 
   constructor({boardContainer}) {
     this.boardContainer = boardContainer;
   }
 
   init() {
-    render(new NewItemList(), this.boardContainer);
+    render(new SortView(), this.boardContainer);
+    render(new ItemListView(), this.boardContainer);
   }
 }
