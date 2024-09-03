@@ -15,8 +15,6 @@ const createSortBlockTemplate = () => `
   </form>
 `;
 
-
-
 export default class SortView {
   getTemplate() {
     return createSortBlockTemplate();
