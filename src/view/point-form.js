@@ -14,7 +14,7 @@ const createDestinationListBlockTemplate = () => `
 `;
 
 const createPicturesBlockTemplate = (pictures) => `
-    ${pictures.map((item) => '<img class="event__photo" src="' + item.src + '" alt="' + item.description + '">').join('')}
+    ${pictures.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join('')}
 `;
 
 function offersList(allOffersType,offerInPoint){

@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 import {timeDate, timeDiff} from '../util.js';
 
 const createOffersBlockTemplate = (offer) => `
-    ${offer.map((item) => '<li class="event__offer"><span class="event__offer-title">' + item.title + '</span>+€&nbsp;<span class="event__offer-price">' + item.price + '</span></li>').join('')}
+    ${offer.map((item) => `<li class="event__offer"><span class="event__offer-title">${item.title}</span>+€&nbsp;<span class="event__offer-price">${item.price}</span></li>`).join('')}
 `;
 
 
