@@ -5,14 +5,14 @@ import {timeDate, timeDiff} from '../util.js';
 function createItemListTemplate(point, destination, offer) {
 
   const {name} = destination;
-  const {base_price, date_from, date_to, is_favorite, type} = point;
-  const favorite = is_favorite ? 'event__favorite-btn--active' : '';
+  const {basePrice, dateFrom, dateTo, isFavorite, type} = point;
+  const favorite = isFavorite ? 'event__favorite-btn--active' : '';
 
-  const dateFrom = timeDate(date_from,'hh:mm');
-  const dateTo = timeDate(date_to,'hh:mm');
-  const date = timeDate(date_from,'MMM D');
-  const dateFull = timeDate(date_from,'YYYY-MM-DD');
-  const duration = timeDiff(date_from,date_to);
+  const dateFromItem = timeDate(dateFrom,'hh:mm');
+  const dateToItem = timeDate(dateTo,'hh:mm');
+  const date = timeDate(dateFrom,'MMM D');
+  const dateFull = timeDate(dateFrom,'YYYY-MM-DD');
+  const duration = timeDiff(dateFrom,dateTo);
 
   return (`<li class="trip-events__item">
           <div class="event">
@@ -23,14 +23,14 @@ function createItemListTemplate(point, destination, offer) {
             <h3 class="event__title">${type} ${name}</h3>
             <div class="event__schedule">
               <p class="event__time">
-                <time class="event__start-time" datetime="${date_from}">${dateFrom}</time>
+                <time class="event__start-time" datetime="${dateFromItem}">${dateFromItem}</time>
                 —
-                <time class="event__end-time" datetime="${date_to}">${dateTo}</time>
+                <time class="event__end-time" datetime="${dateToItem}">${dateToItem}</time>
               </p>
               <p class="event__duration">${duration}M</p>
             </div>
             <p class="event__price">
-              €&nbsp;<span class="event__price-value">${base_price}</span>
+              €&nbsp;<span class="event__price-value">${basePrice}</span>
             </p>
             <h4 class="visually-hidden">Offers:</h4>
             <ul class="event__selected-offers">

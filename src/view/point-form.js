@@ -30,10 +30,10 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
 
   const {offers} = allOffers;
   const {name,description,pictures} = destination;
-  const {base_price, date_from, date_to, type} = point;
+  const {basePrice, dateFrom, dateTo, type} = point;
 
-  const dateFrom = timeDate(date_from,'DD/MM/YY hh:mm');
-  const dateTo = timeDate(date_to,'DD/MM/YY hh:mm');
+  const dateFromItem = timeDate(dateFrom,'DD/MM/YY hh:mm');
+  const dateToItem = timeDate(dateTo,'DD/MM/YY hh:mm');
 
   return (
     `<li class="trip-events__item"><form class="event event--edit" action="#" method="post">
@@ -66,10 +66,10 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFrom}">
+                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFromItem}">
                     —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTo}">
+                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateToItem}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -77,7 +77,7 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${base_price}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
