@@ -13,6 +13,10 @@ const createDestinationListBlockTemplate = () => `
     ${destinationList.map((type) => `<option value="${type}"></option>`).join('')}
 `;
 
+const createPicturesBlockTemplate = (pictures) => `
+    ${pictures.map((item) => '<img class="event__photo" src="' + item.src + '" alt="' + item.description + '">').join('')}
+`;
+
 function offersList(allOffersType,offerInPoint){
 
   const offerInPointId = offerInPoint ? offerInPoint.map((item) => (item.id)) : [];
@@ -98,7 +102,7 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
 
                     <div class="event__photos-container">
                       <div class="event__photos-tape">
-                        ${pictures.map((item) => '<img class="event__photo" src="' + item.src + '" alt="' + item.description + '">').join('')}
+                        ${createPicturesBlockTemplate(pictures)}
                       </div>
                     </div>
                   </section>

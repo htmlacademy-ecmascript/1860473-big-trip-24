@@ -1,6 +1,10 @@
 import {createElement} from '../render.js';
 import {timeDate, timeDiff} from '../util.js';
 
+const createOffersBlockTemplate = (offer) => `
+    ${offer.map((item) => '<li class="event__offer"><span class="event__offer-title">' + item.title + '</span>+€&nbsp;<span class="event__offer-price">' + item.price + '</span></li>').join('')}
+`;
+
 
 function createItemListTemplate(point, destination, offer) {
 
@@ -34,7 +38,7 @@ function createItemListTemplate(point, destination, offer) {
             </p>
             <h4 class="visually-hidden">Offers:</h4>
             <ul class="event__selected-offers">
-              ${offer.map((item) => '<li class="event__offer"><span class="event__offer-title">' + item.title + '</span>+€&nbsp;<span class="event__offer-price">' + item.price + '</span></li>').join('')}
+              ${createOffersBlockTemplate(offer)}
             </ul>
             <button class="event__favorite-btn ${favorite}" type="button">
               <span class="visually-hidden">Add to favorite</span>
