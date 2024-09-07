@@ -17,7 +17,7 @@ function offersList(allOffersType,offerInPoint){
 
   const offerInPointId = offerInPoint ? offerInPoint.map((item) => (item.id)) : [];
   return allOffersType.map((item) => `<div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${offerInPointId.includes(item.id)?'checked=""':''}>
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${offerInPointId.includes(item.id) ? 'checked=""' : ''}>
                         <label class="event__offer-label" for="event-offer-luggage-1">
                           <span class="event__offer-title">${item.title}</span>
                           +€&nbsp;
@@ -98,7 +98,7 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
 
                     <div class="event__photos-container">
                       <div class="event__photos-tape">
-                        ${pictures.map((item) => '<img class="event__photo" src="'+item.src+'" alt="'+item.description+'">').join('')}
+                        ${pictures.map((item) => '<img class="event__photo" src="' + item.src + '" alt="' + item.description + '">').join('')}
                       </div>
                     </div>
                   </section>

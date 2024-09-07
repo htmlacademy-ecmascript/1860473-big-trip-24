@@ -2,10 +2,10 @@ import dayjs from 'dayjs';
 
 function getRandomItem(items){
   return items[Math.floor(Math.random() * items.length)];
-};
+}
 
 function timeDate(time, DATE_FORMAT){
-  return time ? dayjs(time).format(DATE_FORMAT):'';
+  return time ? dayjs(time).format(DATE_FORMAT) : '';
 }
 
 function timeDiff(time1, time2){

@@ -6,7 +6,7 @@ function createItemListTemplate(point, destination, offer) {
 
   const {name} = destination;
   const {base_price, date_from, date_to, is_favorite, type} = point;
-  const favorite = is_favorite ? 'event__favorite-btn--active':'';
+  const favorite = is_favorite ? 'event__favorite-btn--active' : '';
 
   const dateFrom = timeDate(date_from,'hh:mm');
   const dateTo = timeDate(date_to,'hh:mm');
@@ -14,8 +14,7 @@ function createItemListTemplate(point, destination, offer) {
   const dateFull = timeDate(date_from,'YYYY-MM-DD');
   const duration = timeDiff(date_from,date_to);
 
-  return (
-      `<li class="trip-events__item">
+  return (`<li class="trip-events__item">
           <div class="event">
             <time class="event__date" datetime="${dateFull}">${date}</time>
             <div class="event__type">
@@ -35,7 +34,7 @@ function createItemListTemplate(point, destination, offer) {
             </p>
             <h4 class="visually-hidden">Offers:</h4>
             <ul class="event__selected-offers">
-              ${offer.map((item) => '<li class="event__offer"><span class="event__offer-title">'+item.title+'</span>+€&nbsp;<span class="event__offer-price">'+item.price+'</span></li>').join('')}
+              ${offer.map((item) => '<li class="event__offer"><span class="event__offer-title">' + item.title + '</span>+€&nbsp;<span class="event__offer-price">' + item.price + '</span></li>').join('')}
             </ul>
             <button class="event__favorite-btn ${favorite}" type="button">
               <span class="visually-hidden">Add to favorite</span>
