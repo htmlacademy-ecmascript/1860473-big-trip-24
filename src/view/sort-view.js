@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 
-const SORT_TYPES = ['day','event','time','price','offer'];
+const SORT_TYPES = ['day','event','time','price','offers'];
 
 const createSortBlockItemTemplate = (type) => `
   <div class="trip-sort__item  trip-sort__item--${type}">
