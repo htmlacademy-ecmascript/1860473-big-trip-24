@@ -6,7 +6,7 @@ export default class PointsModel {
 
   points = Array.from({length : PointCount}, getRandomPoint);
 
-  GetPoints(){
+  getPoints(){
     return this.points;
   }
 }

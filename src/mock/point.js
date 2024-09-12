@@ -1,4 +1,4 @@
-import {getRandomItem} from '../src/util.js';
+import {getRandomItem} from '../util.js';
 
 const point = [
   {

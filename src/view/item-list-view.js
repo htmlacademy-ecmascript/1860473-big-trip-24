@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {timeDate, timeDiff} from '../util.js';
 
 const createOffersBlockTemplate = (offer) => `
@@ -54,27 +54,19 @@ function createItemListTemplate(point, destination, offer) {
       `);
 }
 
-export default class ItemListView {
-
+export default class ItemListView extends AbstractView {
+  #point = null;
+  #offers = null;
+  #destinations = null;
   constructor({point,offers,destinations}){
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
-  getTemplate() {
-    return createItemListTemplate(this.point, this.destinations, this.offers);
+  get template() {
+    return createItemListTemplate(this.#point, this.#destinations, this.#offers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
 }
