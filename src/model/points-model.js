@@ -4,9 +4,9 @@ const PointCount = 4;
 
 export default class PointsModel {
 
-  points = Array.from({length : PointCount}, getRandomPoint);
+  #points = Array.from({length : PointCount}, getRandomPoint);
 
-  getPoints(){
-    return this.points;
+  get points(){
+    return this.#points;
   }
 }
