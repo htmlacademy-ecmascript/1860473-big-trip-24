@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-const duration = require("dayjs/plugin/duration");
+const duration = require('dayjs/plugin/duration');
 dayjs.extend(duration);
 
 function getRandomItem(items){

@@ -26,10 +26,7 @@ export default class BoardPresenter {
 
     render(this.#listViewComponent, this.#boardContainer);
     render(new SortView(), this.#boardContainer, RenderPosition.AFTERBEGIN);
-   /* render(new PointForm({point: this.#boardPoint[0],
-      allOffers: this.#offersModel.getOfferByType(this.#boardPoint[0].type),
-      offers: [...this.#offersModel.getOfferById(this.#boardPoint[0].type,this.#boardPoint[0].offers)],
-      destinations: this.#destinationsModel.getDestinationById(this.#boardPoint[0].destination)}), this.#listViewComponent.element);*/
+
     for (let i = 1; i < this.#boardPoint.length; i++) {
       this.#renderItem(this.#boardPoint[i],
         [...this.#offersModel.getOfferById(this.#boardPoint[i].type,this.#boardPoint[i].offers)],
@@ -50,7 +47,6 @@ export default class BoardPresenter {
 
     const itemComponent = new ItemListView({point, offers,destinations, allOffers,
       onEditClick: () => {
-        console.log('555');
         replaceCardToForm();
         document.addEventListener('keydown', escKeyDownHandler);
       }});
@@ -65,7 +61,6 @@ export default class BoardPresenter {
     });
 
     function replaceCardToForm(){
-      console.log('56565');
       replace(pointFormComponent,itemComponent);
     }
 

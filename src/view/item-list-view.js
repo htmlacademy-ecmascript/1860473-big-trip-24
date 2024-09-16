@@ -76,7 +76,6 @@ export default class ItemListView extends AbstractView {
   }
 
   #editClickHandler = (evt) => {
-    console.log(this.#handleEditClick);
     evt.preventDefault();
     this.#handleEditClick();
   }
