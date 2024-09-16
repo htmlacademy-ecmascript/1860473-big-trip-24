@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {timeDate} from '../util.js';
 import {eventType,destinationList} from '../const.js';
 
@@ -110,28 +110,31 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
               </form></li>`);
 }
 
-export default class PointForm {
+export default class PointForm extends AbstractView {
+  #point = null;
+  #allOffers = null;
+  #offers = null;
+  #destinations = null;
+  #handleFormSubmit = null;
 
-  constructor({point,allOffers,offers,destinations}){
-    this.point = point;
-    this.allOffers = allOffers;
-    this.offers = offers;
-    this.destinations = destinations;
+  constructor({point,allOffers,offers,destinations, onFormSubmit}){
+    super();
+    this.#point = point;
+    this.#allOffers = allOffers;
+    this.#offers = offers;
+    this.#destinations = destinations;
+    this.#handleFormSubmit = onFormSubmit;
+
+    this.element.querySelector('form').addEventListener('submit',this.#formSubmitHandler);
   }
 
-  getTemplate() {
-    return createEditPointTemplate(this.point, this.destinations, this.offers, this.allOffers);
+  get template() {
+    return createEditPointTemplate(this.#point, this.#destinations, this.#offers, this.#allOffers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
 }
