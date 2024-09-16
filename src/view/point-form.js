@@ -135,6 +135,6 @@ export default class PointForm extends AbstractView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit();
-  }
+  };
 
 }
