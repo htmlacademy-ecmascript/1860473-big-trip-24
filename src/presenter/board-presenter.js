@@ -45,7 +45,7 @@ export default class BoardPresenter {
       }
     };
 
-    const itemComponent = new ItemListView({point, offers,destinations, allOffers,
+    const itemComponent = new ItemListView({point, offers,destinations,
       onEditClick: () => {
         replaceCardToForm();
         document.addEventListener('keydown', escKeyDownHandler);
