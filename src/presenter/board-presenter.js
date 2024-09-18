@@ -29,7 +29,7 @@ export default class BoardPresenter {
     render(this.#listViewComponent, this.#boardContainer);
 
 
-    if (this.#boardPoint.length==0){
+    if (this.#boardPoint.length === 0){
       render(this.#ListEmptyViewComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
       return;
     } else {
