@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {timeDate, timeDiff} from '../util.js';
+import {timeDate, timeDiff} from '../utils/point.js';
 
 const createOffersBlockTemplate = (offer) => `
     ${offer.map((item) => `<li class="event__offer"><span class="event__offer-title">${item.title}</span>+€&nbsp;<span class="event__offer-price">${item.price}</span></li>`).join('')}

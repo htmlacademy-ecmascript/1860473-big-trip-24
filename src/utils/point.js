@@ -36,4 +36,16 @@ function timeDiff(time1, time2){
   return parts.join(' ');
 }
 
-export {getRandomItem, timeDate, timeDiff};
+function isPointExpiringToday(dueDate) {
+  return dueDate && dayjs(dueDate).isSame(dayjs(), 'D');
+}
+
+function isPointExpired(dueDate) {
+  return dueDate && dayjs().isAfter(dueDate, 'D');
+}
+
+function isPointFuture(dueDate) {
+  return dueDate && dayjs().isBefore(dueDate, 'D');
+}
+
+export {getRandomItem, timeDate, timeDiff, isPointExpiringToday, isPointExpired, isPointFuture};

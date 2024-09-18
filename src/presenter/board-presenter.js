@@ -3,6 +3,7 @@ import ItemListView from '../view/item-list-view.js';
 import SortView from '../view/sort-view.js';
 import PointForm from '../view/point-form.js';
 import ListView from '../view/list-view.js';
+import ListEmptyView from '../view/list-empty-view.js';
 
 
 export default class BoardPresenter {
@@ -13,6 +14,7 @@ export default class BoardPresenter {
   #boardPoint = [];
 
   #listViewComponent = new ListView();
+  #ListEmptyViewComponent = new ListEmptyView();
 
   constructor({boardContainer,pointsModel,offersModel,destinationsModel}) {
     this.#boardContainer = boardContainer;
@@ -25,9 +27,16 @@ export default class BoardPresenter {
     this.#boardPoint = [...this.#pointsModel.points];
 
     render(this.#listViewComponent, this.#boardContainer);
-    render(new SortView(), this.#boardContainer, RenderPosition.AFTERBEGIN);
 
-    for (let i = 1; i < this.#boardPoint.length; i++) {
+
+    if (this.#boardPoint.length==0){
+      render(this.#ListEmptyViewComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+      return;
+    } else {
+      render(new SortView(), this.#boardContainer, RenderPosition.AFTERBEGIN);
+    }
+
+    for (let i = 0; i < this.#boardPoint.length; i++) {
       this.#renderItem(this.#boardPoint[i],
         [...this.#offersModel.getOfferById(this.#boardPoint[i].type,this.#boardPoint[i].offers)],
         this.#destinationsModel.getDestinationById(this.#boardPoint[i].destination),

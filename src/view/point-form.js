@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {timeDate} from '../util.js';
+import {timeDate} from '../utils/point.js';
 import {eventType,destinationList} from '../const.js';
 
 const createEventTypeBlockTemplate = () => `
