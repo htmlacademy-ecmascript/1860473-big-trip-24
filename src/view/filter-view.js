@@ -16,19 +16,21 @@ function createFilterEventsTemplate(filterItems) {
   const filterItemsTemplate = filterItems
     .map((filter, index) => createFilterItemTemplate(filter, index === 0))
     .join('');
-  return ( `<form class="trip-filters" action="#" method="get">
+
+  return (`<form class="trip-filters" action="#" method="get">
       ${filterItemsTemplate}
       <button class="visually-hidden" type="submit">Accept filter</button>
-    </form>`
-  );
+    </form>`);
 }
 
 export default class FilterView extends AbstractView {
   #filters = null;
+
   constructor({filters}){
     super();
     this.#filters = filters;
   }
+
   get template() {
     return createFilterEventsTemplate(this.#filters);
   }
