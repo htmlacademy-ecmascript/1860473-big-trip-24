@@ -1,4 +1,4 @@
-import {RenderPosition, replace, render} from '../framework/render.js';
+import {RenderPosition, render} from '../framework/render.js';
 import ListView from '../view/list-view.js';
 import SortView from '../view/sort-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
