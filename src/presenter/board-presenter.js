@@ -1,9 +1,8 @@
 import {RenderPosition, replace, render} from '../framework/render.js';
-import ItemListView from '../view/item-list-view.js';
-import SortView from '../view/sort-view.js';
-import PointForm from '../view/point-form.js';
 import ListView from '../view/list-view.js';
+import SortView from '../view/sort-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
+import PointPresenter from './point-presenter.js';
 
 
 export default class BoardPresenter {
@@ -46,37 +45,11 @@ export default class BoardPresenter {
 
   #renderItem(point,offers,destinations, allOffers){
 
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const itemComponent = new ItemListView({point, offers,destinations,
-      onEditClick: () => {
-        replaceCardToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }});
-
-
-    const pointFormComponent = new PointForm({
-      point, offers, destinations, allOffers,
-      onFormSubmit: () => {
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
+    const pointPresenter = new PointPresenter({
+      listViewComponent : this.#listViewComponent.element,
     });
 
-    function replaceCardToForm(){
-      replace(pointFormComponent,itemComponent);
-    }
-
-    function replaceFormToCard(){
-      replace(itemComponent, pointFormComponent);
-    }
-
-    render(itemComponent, this.#listViewComponent.element);
+    pointPresenter.init(point, offers, destinations, allOffers);
   }
+
 }
