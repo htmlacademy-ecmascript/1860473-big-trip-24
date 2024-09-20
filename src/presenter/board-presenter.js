@@ -4,6 +4,7 @@ import SortView from '../view/sort-view.js';
 import FilterView from '../view/filter-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
+import { updateItem } from '../utils/point.js';
 
 
 export default class BoardPresenter {
@@ -13,6 +14,7 @@ export default class BoardPresenter {
   #filtersModel = null;
   #destinationsModel = null;
   #boardPoint = [];
+  #pointPresenters = new Map();
 
   #listViewComponent = new ListView();
   #ListEmptyViewComponent = new ListEmptyView();
@@ -50,13 +52,29 @@ export default class BoardPresenter {
     }
   }
 
+  #clearPointList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
+  #handlePointChange = (updatedPoint) =>{
+    this.#boardPoint = updateItem(this.#boardPoint,updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint,
+      [...this.#offersModel.getOfferById(updatedPoint.type,updatedPoint.offers)],
+        this.#destinationsModel.getDestinationById(updatedPoint.destination),
+        this.#offersModel.getOfferByType(updatedPoint.type)
+    );
+  }
+
   #renderItem(point,offers,destinations, allOffers){
 
     const pointPresenter = new PointPresenter({
       listViewComponent : this.#listViewComponent.element,
+      onDataChange : this.#handlePointChange
     });
 
     pointPresenter.init(point, offers, destinations, allOffers);
+    this.#pointPresenters.set(point.id,pointPresenter);
   }
 
 }

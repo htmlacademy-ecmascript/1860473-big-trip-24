@@ -48,4 +48,8 @@ function isPointFuture(dueDate) {
   return dueDate && dayjs().isBefore(dueDate, 'D');
 }
 
-export {getRandomItem, timeDate, timeDiff, isPointExpiringToday, isPointExpired, isPointFuture};
+function updateItem(items, update){
+  return items.map((item) => item.id === update.id ? update : item);
+}
+
+export {getRandomItem, timeDate, timeDiff, isPointExpiringToday, isPointExpired, isPointFuture, updateItem};

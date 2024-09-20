@@ -1,4 +1,4 @@
-import {replace, render} from '../framework/render.js';
+import {replace, render, remove} from '../framework/render.js';
 import PointForm from '../view/point-form.js';
 import ItemListView from '../view/item-list-view.js';
 
@@ -11,9 +11,11 @@ export default class PointPresenter{
   #offers = null;
   #destinations = null;
   #allOffers = null;
+  #handleDataChange = null;
 
-  constructor({listViewComponent}) {
+  constructor({listViewComponent,onDataChange}) {
     this.#listViewComponent = listViewComponent;
+    this.#handleDataChange = onDataChange;
   }
 
   init(point, offers, destinations, allOffers){
@@ -22,13 +24,16 @@ export default class PointPresenter{
     this.#destinations = destinations;
     this.#allOffers = allOffers;
 
+    const prevPointComponent = this.#itemComponent;
+    const prevPointFormComponent = this.#pointFormComponent;
+
     this.#itemComponent = new ItemListView({
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
-      onEditClick: () => {
-        this.#replaceCardToForm();
-      }});
+      onFavoriteClick : this.#handleFavoriteClick,
+      onEditClick: this.#handleEditClick
+    });
 
 
     this.#pointFormComponent = new PointForm({
@@ -36,12 +41,31 @@ export default class PointPresenter{
       offers: this.#offers,
       destinations: this.#destinations,
       allOffers: this.#allOffers,
-      onFormSubmit: () => {
-        this.#replaceFormToCard();
-      }
+      onFavoriteClick : this.#handleFavoriteClick,
+      onFormSubmit: this.#handleFormSubmit
     });
 
-    render(this.#itemComponent, this.#listViewComponent);
+    if (!prevPointComponent || !prevPointFormComponent){
+      render(this.#itemComponent, this.#listViewComponent);
+      return;
+    }
+
+    if (this.#listViewComponent.contains(prevPointComponent.element)){
+      replace(this.#itemComponent,prevPointComponent);
+    }
+
+    if (this.#listViewComponent.contains(prevPointFormComponent.element)){
+      replace(this.#pointFormComponent,prevPointFormComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevPointFormComponent);
+
+  }
+
+  destroy(){
+    remove(this.#itemComponent);
+    remove(this.#pointFormComponent);
   }
 
   #escKeyDownHandler = (evt) => {
@@ -59,6 +83,19 @@ export default class PointPresenter{
   #replaceFormToCard(){
     replace(this.#itemComponent, this.#pointFormComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+  }
+
+  #handleEditClick = () => {
+    this.#replaceCardToForm();
+  };
+
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({...this.#point, isFavorite : !this.#point.isFavorite});
+  }
+
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToCard();
   }
 
 }
