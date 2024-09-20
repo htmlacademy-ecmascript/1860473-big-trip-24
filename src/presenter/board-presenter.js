@@ -61,10 +61,10 @@ export default class BoardPresenter {
     this.#boardPoint = updateItem(this.#boardPoint,updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint,
       [...this.#offersModel.getOfferById(updatedPoint.type,updatedPoint.offers)],
-        this.#destinationsModel.getDestinationById(updatedPoint.destination),
-        this.#offersModel.getOfferByType(updatedPoint.type)
+      this.#destinationsModel.getDestinationById(updatedPoint.destination),
+      this.#offersModel.getOfferByType(updatedPoint.type)
     );
-  }
+  };
 
   #renderItem(point,offers,destinations, allOffers){
 
