@@ -1,6 +1,7 @@
 import {RenderPosition, render} from '../framework/render.js';
 import ListView from '../view/list-view.js';
 import SortView from '../view/sort-view.js';
+import FilterView from '../view/filter-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
 
@@ -9,16 +10,18 @@ export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
   #offersModel = null;
+  #filtersModel = null;
   #destinationsModel = null;
   #boardPoint = [];
 
   #listViewComponent = new ListView();
   #ListEmptyViewComponent = new ListEmptyView();
 
-  constructor({boardContainer,pointsModel,offersModel,destinationsModel}) {
+  constructor({boardContainer,pointsModel,offersModel,filtersModel,destinationsModel}) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
+    this.#filtersModel = filtersModel;
     this.#destinationsModel = destinationsModel;
   }
 
@@ -26,6 +29,10 @@ export default class BoardPresenter {
     this.#boardPoint = [...this.#pointsModel.points];
 
     render(this.#listViewComponent, this.#boardContainer);
+
+    const siteHeaderElement = document.querySelector('.trip-controls__filters');
+    const filters = this.#filtersModel.generateFilter(this.#pointsModel.points);
+    render(new FilterView({filters}), siteHeaderElement);
 
 
     if (this.#boardPoint.length === 0){
