@@ -1,25 +1,30 @@
-import {RenderPosition, replace, render} from '../framework/render.js';
-import ItemListView from '../view/item-list-view.js';
-import SortView from '../view/sort-view.js';
-import PointForm from '../view/point-form.js';
+import {RenderPosition, render} from '../framework/render.js';
 import ListView from '../view/list-view.js';
+import HeaderView from '../view/header-view.js';
+import SortView from '../view/sort-view.js';
+import FilterView from '../view/filter-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
+import PointPresenter from './point-presenter.js';
+import { updateItem } from '../utils/point.js';
 
 
 export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
   #offersModel = null;
+  #filtersModel = null;
   #destinationsModel = null;
   #boardPoint = [];
+  #pointPresenters = new Map();
 
   #listViewComponent = new ListView();
   #ListEmptyViewComponent = new ListEmptyView();
 
-  constructor({boardContainer,pointsModel,offersModel,destinationsModel}) {
+  constructor({boardContainer,pointsModel,offersModel,filtersModel,destinationsModel}) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
+    this.#filtersModel = filtersModel;
     this.#destinationsModel = destinationsModel;
   }
 
@@ -27,6 +32,12 @@ export default class BoardPresenter {
     this.#boardPoint = [...this.#pointsModel.points];
 
     render(this.#listViewComponent, this.#boardContainer);
+
+    const siteHeaderElement = document.querySelector('.trip-controls__filters');
+    const siteHeaderTopElement = document.querySelector('.trip-main');
+    const filters = this.#filtersModel.generateFilter(this.#pointsModel.points);
+    render(new FilterView({filters}), siteHeaderElement);
+    render(new HeaderView(), siteHeaderTopElement, RenderPosition.AFTERBEGIN);
 
 
     if (this.#boardPoint.length === 0){
@@ -44,39 +55,34 @@ export default class BoardPresenter {
     }
   }
 
+  #clearPointList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
+  #handlePointChange = (updatedPoint) =>{
+    this.#boardPoint = updateItem(this.#boardPoint,updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint,
+      [...this.#offersModel.getOfferById(updatedPoint.type,updatedPoint.offers)],
+      this.#destinationsModel.getDestinationById(updatedPoint.destination),
+      this.#offersModel.getOfferByType(updatedPoint.type)
+    );
+  };
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
   #renderItem(point,offers,destinations, allOffers){
 
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const itemComponent = new ItemListView({point, offers,destinations,
-      onEditClick: () => {
-        replaceCardToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }});
-
-
-    const pointFormComponent = new PointForm({
-      point, offers, destinations, allOffers,
-      onFormSubmit: () => {
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
+    const pointPresenter = new PointPresenter({
+      listViewComponent : this.#listViewComponent.element,
+      onDataChange : this.#handlePointChange,
+      onModeChange : this.#handleModeChange,
     });
 
-    function replaceCardToForm(){
-      replace(pointFormComponent,itemComponent);
-    }
-
-    function replaceFormToCard(){
-      replace(itemComponent, pointFormComponent);
-    }
-
-    render(itemComponent, this.#listViewComponent.element);
+    pointPresenter.init(point, offers, destinations, allOffers);
+    this.#pointPresenters.set(point.id,pointPresenter);
   }
+
 }

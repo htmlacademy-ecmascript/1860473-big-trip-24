@@ -58,14 +58,17 @@ export default class ItemListView extends AbstractView {
   #point = null;
   #offers = null;
   #destinations = null;
+  #handleFavoriteClick = null;
   #handleEditClick = null;
-  constructor({point, offers, destinations, onEditClick}){
+  constructor({point, offers, destinations, onFavoriteClick, onEditClick}){
     super();
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#handleFavoriteClick = onFavoriteClick;
     this.#handleEditClick = onEditClick;
 
+    this.element.querySelector('.event__favorite-btn ').addEventListener('click',this.#favoriteClickHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click',this.#editClickHandler);
   }
 
@@ -76,6 +79,11 @@ export default class ItemListView extends AbstractView {
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleEditClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFavoriteClick();
   };
 
 }
