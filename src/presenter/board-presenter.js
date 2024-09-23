@@ -68,7 +68,7 @@ export default class BoardPresenter {
 
   #handleModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
-  }
+  };
 
   #renderItem(point,offers,destinations, allOffers){
 

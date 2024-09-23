@@ -59,11 +59,11 @@ export default class PointPresenter{
       return;
     }
 
-    if (this.#Mode == Mode.DEFAULT){
+    if (this.#Mode === Mode.DEFAULT){
       replace(this.#itemComponent,prevPointComponent);
     }
 
-    if (this.#Mode == Mode.EDITING){
+    if (this.#Mode === Mode.EDITING){
       replace(this.#pointFormComponent,prevPointFormComponent);
     }
 
@@ -78,7 +78,7 @@ export default class PointPresenter{
   }
 
   resetView(){
-    if (this.#Mode != Mode.DEFAULT){
+    if (this.#Mode !== Mode.DEFAULT){
       this.#replaceFormToCard();
     }
   }
