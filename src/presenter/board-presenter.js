@@ -66,11 +66,16 @@ export default class BoardPresenter {
     );
   };
 
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  }
+
   #renderItem(point,offers,destinations, allOffers){
 
     const pointPresenter = new PointPresenter({
       listViewComponent : this.#listViewComponent.element,
-      onDataChange : this.#handlePointChange
+      onDataChange : this.#handlePointChange,
+      onModeChange : this.#handleModeChange,
     });
 
     pointPresenter.init(point, offers, destinations, allOffers);
