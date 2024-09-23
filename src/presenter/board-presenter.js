@@ -1,5 +1,6 @@
 import {RenderPosition, render} from '../framework/render.js';
 import ListView from '../view/list-view.js';
+import HeaderView from '../view/header-view.js';
 import SortView from '../view/sort-view.js';
 import FilterView from '../view/filter-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
@@ -33,8 +34,10 @@ export default class BoardPresenter {
     render(this.#listViewComponent, this.#boardContainer);
 
     const siteHeaderElement = document.querySelector('.trip-controls__filters');
+    const siteHeaderTopElement = document.querySelector('.trip-main');
     const filters = this.#filtersModel.generateFilter(this.#pointsModel.points);
     render(new FilterView({filters}), siteHeaderElement);
+    render(new HeaderView(), siteHeaderTopElement, RenderPosition.AFTERBEGIN);
 
 
     if (this.#boardPoint.length === 0){

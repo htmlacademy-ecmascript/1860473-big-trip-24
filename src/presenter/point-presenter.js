@@ -105,6 +105,7 @@ export default class PointPresenter{
 
   #handleEditClick = () => {
     this.#replaceCardToForm();
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #handleFavoriteClick = () => {
