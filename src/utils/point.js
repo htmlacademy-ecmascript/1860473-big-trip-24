@@ -52,4 +52,53 @@ function updateItem(items, update){
   return items.map((item) => item.id === update.id ? update : item);
 }
 
-export {getRandomItem, timeDate, timeDiff, isPointExpiringToday, isPointExpired, isPointFuture, updateItem};
+function getWeightForNullDate(dateA, dateB) {
+  if (dateA === null && dateB === null) {
+    return 0;
+  }
+
+  if (dateA === null) {
+    return 1;
+  }
+
+  if (dateB === null) {
+    return -1;
+  }
+
+  return null;
+}
+
+function sortPointDate(pointA, pointB) {
+  const weight = getWeightForNullDate(pointA.dateFrom, pointB.dateFrom);
+
+  return weight ?? dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+}
+
+function timeDiffMilliseconds(time1, time2){
+  const date1 = dayjs(time1);
+  const date2 = dayjs(time2);
+
+  const diffMilliseconds = date2.diff(date1);
+
+  return diffMilliseconds;
+}
+
+function sortPointTime(pointA, pointB) {
+  return timeDiffMilliseconds(pointA.dateFrom,pointA.dateTo) - timeDiffMilliseconds(pointB.dateFrom,pointB.dateTo);
+}
+
+function sortPointPrice(pointA, pointB) {
+  return pointA.basePrice - pointB.basePrice;
+}
+
+function sortPointEvent(pointA, pointB) {
+  if (pointA.type > pointB.type) {
+    return 1;
+  }
+  if (pointA.type < pointB.type) {
+    return -1;
+  }
+  return 0;
+}
+
+export {getRandomItem, timeDate, timeDiff, isPointExpiringToday, isPointExpired, isPointFuture, updateItem, sortPointDate, sortPointTime, sortPointPrice, sortPointEvent};
