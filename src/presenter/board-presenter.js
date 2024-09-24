@@ -87,26 +87,26 @@ export default class BoardPresenter {
     switch(sortTypes){
       case sortType.DAY:
         this.#boardPoint.sort(sortPointDate);
-      break;
+        break;
       case sortType.PRICE:
         this.#boardPoint.sort(sortPointPrice);
-      break;
+        break;
       case sortType.TIME:
         this.#boardPoint.sort(sortPointTime);
-      break;
+        break;
       case sortType.EVENT:
         this.#boardPoint.sort(sortPointEvent);
-      break;
+        break;
       default:
-        this.#boardPoint=[...this.#sourcedBoardPoints];
+        this.#boardPoint = [...this.#sourcedBoardPoints];
     }
 
     this.#currentSortType = sortTypes;
 
-  };
+  }
 
-  #handleSortTypeChange = (sortType) => {
-    if (this.#currentSortType === sortType){
+  #handleSortTypeChange = (sortTypes) => {
+    if (this.#currentSortType === sortTypes){
       return;
     }
 
