@@ -110,7 +110,7 @@ export default class BoardPresenter {
       return;
     }
 
-    this.#sortPoints(sortType);
+    this.#sortPoints(sortTypes);
     this.#clearPointList();
     this.#renderPointList();
 
