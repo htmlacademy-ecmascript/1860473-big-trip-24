@@ -50,7 +50,6 @@ export default class PointPresenter{
       offers: this.#offers,
       destinations: this.#destinations,
       allOffers: this.#allOffers,
-     // onFavoriteClick : this.#handleFavoriteClick,
       onFormSubmit: this.#handleFormSubmit
     });
 

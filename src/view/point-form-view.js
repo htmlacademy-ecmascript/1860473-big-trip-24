@@ -32,7 +32,6 @@ function offersList(allOffersType,offerInPoint){
 
 function createEditPointTemplate(point, offer) {
 
- // const {name,description,pictures} = destination;
   const {basePrice, dateFrom, dateTo, type, typesOffers, typeDestinations} = point;
 
   const dateFromItem = timeDate(dateFrom,'DD/MM/YY hh:mm');
@@ -87,17 +86,16 @@ function createEditPointTemplate(point, offer) {
                   <button class="event__reset-btn" type="reset">Cancel</button>
                 </header>
                 <section class="event__details">
-                ${offersList(typesOffers.offers,offer).length>0 ? `
+                ${offersList(typesOffers.offers,offer).length > 0 ? `
                   <section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
                       ${offersList(typesOffers.offers,offer)}
                     </div>
-                  </section>
-                  ` : ``}
+                  </section>` : ``}
 
-                  ${(typeDestinations.description || (typeDestinations.pictures.length > 0))? `
+                  ${(typeDestinations.description || (typeDestinations.pictures.length > 0)) ? `
                     <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${typeDestinations.description}</p>
@@ -107,8 +105,7 @@ function createEditPointTemplate(point, offer) {
                         ${createPicturesBlockTemplate(typeDestinations.pictures)}
                       </div>
                     </div>
-                  </section>
-                    ` : ``}
+                  </section>` : ``}
 
                 </section>
               </form></li>`);
@@ -162,7 +159,7 @@ export default class PointForm extends AbstractStatefulView {
     this.updateElement({
       typeDestinations : {...this.#destinationsTypes.getDestinationByName(destination)},
     });
-  }
+  };
 
   #offerChangeHandler = (evt) => {
     evt.preventDefault();
@@ -171,39 +168,14 @@ export default class PointForm extends AbstractStatefulView {
       type: offer,
       typesOffers : {...this.#allOffersTypes.getOfferByType(offer)},
     });
-
-  }
+  };
 
   static parsePointToState(point,typesOffers,typeDestinations) {
     return {...point,typesOffers,typeDestinations};
   }
 
   static parseStateToPoint(state,typesOffers,typeDestinations) {
-    /*const point = {...state};
-
-    console.log(typesOffers);*/
-
-    /*if (!point.isDueDate) {
-      point.dueDate = null;
-    }
-
-    if (!point.isRepeating) {
-      point.repeating = {
-        mo: false,
-        tu: false,
-        we: false,
-        th: false,
-        fr: false,
-        sa: false,
-        su: false,
-      };
-    }
-     delete point.isRepeating;
-     delete point.isDueDate;
-    */
-
-      return {...state,typesOffers,typeDestinations};
+    return {...state,typesOffers,typeDestinations};
   }
-
 
 }
