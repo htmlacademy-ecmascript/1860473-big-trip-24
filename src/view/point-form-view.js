@@ -93,7 +93,7 @@ function createEditPointTemplate(point, offer) {
                     <div class="event__available-offers">
                       ${offersList(typesOffers.offers,offer)}
                     </div>
-                  </section>` : ``}
+                  </section>` : ''}
 
                   ${(typeDestinations.description || (typeDestinations.pictures.length > 0)) ? `
                     <section class="event__section  event__section--destination">
@@ -105,14 +105,13 @@ function createEditPointTemplate(point, offer) {
                         ${createPicturesBlockTemplate(typeDestinations.pictures)}
                       </div>
                     </div>
-                  </section>` : ``}
+                  </section>` : ''}
 
                 </section>
               </form></li>`);
 }
 
 export default class PointForm extends AbstractStatefulView {
-  //#point = null;
   #allOffers = null;
   #offers = null;
   #destinations = null;
@@ -122,7 +121,6 @@ export default class PointForm extends AbstractStatefulView {
 
   constructor({point, allOffers, offers, destinations, onFormSubmit}){
     super();
-    //this.#point = point;
     this.#allOffersTypes = allOffers;
     this.#allOffers = this.#allOffersTypes.getOfferByType(point.type);
     this.#destinationsTypes = destinations;
@@ -130,7 +128,6 @@ export default class PointForm extends AbstractStatefulView {
     this._setState(PointForm.parsePointToState(point, this.#allOffers, this.#destinations));
 
     this.#offers = offers;
-    //this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
 
     this.element.querySelector('form').addEventListener('submit',this.#formSubmitHandler);
