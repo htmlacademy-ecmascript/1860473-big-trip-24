@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {timeDate} from '../utils/point.js';
 import {eventType,destinationList} from '../const.js';
 
@@ -30,11 +30,10 @@ function offersList(allOffersType,offerInPoint){
                       </div>`).join('');
 }
 
-function createEditPointTemplate(point, destination, offer, allOffers) {
+function createEditPointTemplate(point, offer) {
 
-  const {offers} = allOffers;
-  const {name,description,pictures} = destination;
-  const {basePrice, dateFrom, dateTo, type} = point;
+ // const {name,description,pictures} = destination;
+  const {basePrice, dateFrom, dateTo, type, typesOffers, typeDestinations} = point;
 
   const dateFromItem = timeDate(dateFrom,'DD/MM/YY hh:mm');
   const dateToItem = timeDate(dateTo,'DD/MM/YY hh:mm');
@@ -62,7 +61,7 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${type}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${typeDestinations.name}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       ${createDestinationListBlockTemplate()}
                     </datalist>
@@ -88,53 +87,123 @@ function createEditPointTemplate(point, destination, offer, allOffers) {
                   <button class="event__reset-btn" type="reset">Cancel</button>
                 </header>
                 <section class="event__details">
+                ${offersList(typesOffers.offers,offer).length>0 ? `
                   <section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
-                      ${offersList(offers,offer)}
+                      ${offersList(typesOffers.offers,offer)}
                     </div>
                   </section>
+                  ` : ``}
 
-                  <section class="event__section  event__section--destination">
+                  ${(typeDestinations.description || (typeDestinations.pictures.length > 0))? `
+                    <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${description}</p>
+                    <p class="event__destination-description">${typeDestinations.description}</p>
 
                     <div class="event__photos-container">
                       <div class="event__photos-tape">
-                        ${createPicturesBlockTemplate(pictures)}
+                        ${createPicturesBlockTemplate(typeDestinations.pictures)}
                       </div>
                     </div>
                   </section>
+                    ` : ``}
+
                 </section>
               </form></li>`);
 }
 
-export default class PointForm extends AbstractView {
-  #point = null;
+export default class PointForm extends AbstractStatefulView {
+  //#point = null;
   #allOffers = null;
   #offers = null;
   #destinations = null;
   #handleFormSubmit = null;
+  #allOffersTypes = null;
+  #destinationsTypes = null;
 
-  constructor({point,allOffers,offers,destinations, onFormSubmit}){
+  constructor({point, allOffers, offers, destinations, onFormSubmit}){
     super();
-    this.#point = point;
-    this.#allOffers = allOffers;
+    //this.#point = point;
+    this.#allOffersTypes = allOffers;
+    this.#allOffers = this.#allOffersTypes.getOfferByType(point.type);
+    this.#destinationsTypes = destinations;
+    this.#destinations = this.#destinationsTypes.getDestinationById(point.destination);
+    this._setState(PointForm.parsePointToState(point, this.#allOffers, this.#destinations));
+
     this.#offers = offers;
-    this.#destinations = destinations;
+    //this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
 
     this.element.querySelector('form').addEventListener('submit',this.#formSubmitHandler);
+    this.element.querySelector('#event-destination-1').addEventListener('change',this.#destinationChangeHandler);
+    this.element.querySelector('.event__type-list').addEventListener('click',this.#offerChangeHandler);
   }
 
   get template() {
-    return createEditPointTemplate(this.#point, this.#destinations, this.#offers, this.#allOffers);
+    return createEditPointTemplate(this._state, this.#offers);
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('form').addEventListener('submit',this.#formSubmitHandler);
+    this.element.querySelector('#event-destination-1').addEventListener('change',this.#destinationChangeHandler);
+    this.element.querySelector('.event__type-list').addEventListener('click',this.#offerChangeHandler);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(PointForm.parseStateToPoint(this._state, this.#allOffers, this.#destinations));
   };
+
+  #destinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    const destination = evt.target.value;
+    this.updateElement({
+      typeDestinations : {...this.#destinationsTypes.getDestinationByName(destination)},
+    });
+  }
+
+  #offerChangeHandler = (evt) => {
+    evt.preventDefault();
+    const offer = evt.target.previousElementSibling.value;
+    this.updateElement({
+      type: offer,
+      typesOffers : {...this.#allOffersTypes.getOfferByType(offer)},
+    });
+
+  }
+
+  static parsePointToState(point,typesOffers,typeDestinations) {
+    return {...point,typesOffers,typeDestinations};
+  }
+
+  static parseStateToPoint(state,typesOffers,typeDestinations) {
+    /*const point = {...state};
+
+    console.log(typesOffers);*/
+
+    /*if (!point.isDueDate) {
+      point.dueDate = null;
+    }
+
+    if (!point.isRepeating) {
+      point.repeating = {
+        mo: false,
+        tu: false,
+        we: false,
+        th: false,
+        fr: false,
+        sa: false,
+        su: false,
+      };
+    }
+     delete point.isRepeating;
+     delete point.isDueDate;
+    */
+
+      return {...state,typesOffers,typeDestinations};
+  }
+
 
 }

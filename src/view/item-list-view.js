@@ -64,7 +64,7 @@ export default class ItemListView extends AbstractView {
     super();
     this.#point = point;
     this.#offers = offers;
-    this.#destinations = destinations;
+    this.#destinations = destinations.getDestinationById(point.destination);
     this.#handleFavoriteClick = onFavoriteClick;
     this.#handleEditClick = onEditClick;
 
