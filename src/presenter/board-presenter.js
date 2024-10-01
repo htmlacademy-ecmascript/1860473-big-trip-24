@@ -56,8 +56,10 @@ export default class BoardPresenter {
     this.#sourcedBoardPoints = updateItem(this.#boardPoint,updatedPoint);
 
     const offers = [...this.#offersModel.getOfferById(updatedPoint.type,updatedPoint.offers)];
-    const destinations = this.#destinationsModel.getDestinationById(updatedPoint.destination);
-    const allOffers = this.#offersModel.getOfferByType(updatedPoint.type);
+    //const destinations = this.#destinationsModel.getDestinationById(updatedPoint.destination);
+    const destinations = this.#destinationsModel;
+    //const allOffers = this.#offersModel.getOfferByType(updatedPoint.type);
+    const allOffers = this.#offersModel;
 
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint,
       offers,
@@ -131,8 +133,10 @@ export default class BoardPresenter {
   #renderPointList() {
     for (let i = 0; i < this.#boardPoint.length; i++) {
       const offers = [...this.#offersModel.getOfferById(this.#boardPoint[i].type,this.#boardPoint[i].offers)];
-      const destinations = this.#destinationsModel.getDestinationById(this.#boardPoint[i].destination);
-      const allOffers = this.#offersModel.getOfferByType(this.#boardPoint[i].type);
+      //const destinations = this.#destinationsModel.getDestinationById(this.#boardPoint[i].destination);
+      const destinations = this.#destinationsModel;
+      //const allOffers = this.#offersModel.getOfferByType(this.#boardPoint[i].type);
+      const allOffers = this.#offersModel;
       this.#renderItem(this.#boardPoint[i],
         offers,
         destinations,

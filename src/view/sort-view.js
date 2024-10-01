@@ -20,15 +20,16 @@ export default class SortView extends AbstractView {
   constructor({onSortTypeChange}){
     super();
     this.#handleSortTypeChange = onSortTypeChange;
-    this.element.addEventListener('click',this.#SortTypeChange);
+    this.element.addEventListener('click',this.#sortTypeChange);
   }
 
   get template() {
     return createSortBlockTemplate();
   }
 
-  #SortTypeChange = (evt) => {
+  #sortTypeChange = (evt) => {
     evt.preventDefault();
+    evt.target.previousElementSibling.checked = true;
     this.#handleSortTypeChange(evt.target.dataset.sortType);
   };
 

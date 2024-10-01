@@ -141,7 +141,7 @@ const destination = [
   },
   {
     'id': '363aa35f-8cee-48da-9ff8-6d0d6c54d9b0',
-    'description': 'Naples - full of of cozy canteens where you can try the best coffee in the Middle East',
+    'description': '',
     'name': 'Naples',
     'pictures': []
   },

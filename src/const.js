@@ -1,5 +1,5 @@
 const eventType = ['taxi','bus','train','ship','drive','flight','check-in','sightseeing','restaurant'];
-const destinationList = ['Amsterdam','Geneva','Chamonix'];
+const destinationList = ['Nagasaki','Munich','Chamonix','Rome','Moscow','Den Haag','Oslo','Naples'];
 const filterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
