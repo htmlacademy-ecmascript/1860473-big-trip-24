@@ -50,7 +50,8 @@ export default class PointPresenter{
       offers: this.#offers,
       destinations: this.#destinations,
       allOffers: this.#allOffers,
-      onFormSubmit: this.#handleFormSubmit
+      onFormSubmit: this.#handleFormSubmit,
+      onCancelClick: this.#handleCancelClick
     });
 
     if (!prevPointComponent || !prevPointFormComponent){
@@ -101,6 +102,11 @@ export default class PointPresenter{
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#Mode = Mode.DEFAULT;
   }
+
+  #handleCancelClick = () => {
+    this.#replaceFormToCard();
+    this.#Mode = Mode.DEFAULT;
+  };
 
   #handleEditClick = () => {
     this.#replaceCardToForm();
