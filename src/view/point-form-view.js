@@ -171,7 +171,7 @@ export default class PointForm extends AbstractStatefulView {
   #cancelClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleCancelClick();
-  }
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
