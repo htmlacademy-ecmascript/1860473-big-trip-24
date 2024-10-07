@@ -1,16 +1,16 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { sortType } from '../const.js';
 
-const createSortBlockItemTemplate = (key, type) => `
+const createSortBlockItemTemplate = (key, type, currentSortType) => `
   <div class="trip-sort__item  trip-sort__item--${type}">
-    <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${type}">
+    <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${type}" ${type === currentSortType ? 'checked' : ''}>
     <label data-sort-type="${type}" class="trip-sort__btn" for="sort-${type}">${type}</label>
   </div>
 `;
 
-const createSortBlockTemplate = () => `
+const createSortBlockTemplate = (currentSortType) => `
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${Object.entries(sortType).map(([key, type]) => createSortBlockItemTemplate(key,type)).join('')}
+    ${Object.entries(sortType).map(([key, type]) => createSortBlockItemTemplate(key,type, currentSortType)).join('')}
   </form>
 `;
 
@@ -31,7 +31,6 @@ export default class SortView extends AbstractView {
 
   #sortTypeChange = (evt) => {
     evt.preventDefault();
-    evt.target.previousElementSibling.checked = true;
     this.#handleSortTypeChange(evt.target.dataset.sortType);
   };
 
