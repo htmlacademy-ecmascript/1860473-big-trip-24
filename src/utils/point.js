@@ -30,7 +30,7 @@ function timeDiff(time1, time2){
     parts.push(`${hours}H`);
   }
   if (minutes > 0 || hours > 0 || days > 0) {
-    parts.push(`${minutes}M`);
+    parts.push(`${minutes}`);
   }
 
   return parts.join(' ');
@@ -101,4 +101,8 @@ function sortPointEvent(pointA, pointB) {
   return 0;
 }
 
-export {getRandomItem, timeDate, timeDiff, isPointExpiringToday, isPointExpired, isPointFuture, updateItem, sortPointDate, sortPointTime, sortPointPrice, sortPointEvent};
+function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
+export {getRandomItem, timeDate, timeDiff, isPointExpiringToday, isPointExpired, isPointFuture, updateItem, sortPointDate, sortPointTime, sortPointPrice, sortPointEvent, isDatesEqual};
