@@ -4,8 +4,8 @@ import HeaderView from '../view/header-view.js';
 import SortView from '../view/sort-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
-import { updateItem, sortPointDate, sortPointTime, sortPointPrice, sortPointEvent} from '../utils/point.js';
-import { sortType, userAction, updateType, filterType, DEFAULT_FILTER_TYPE, DEFAULT_SORTING_TYPE } from '../const.js';
+import { sortPointDate, sortPointTime, sortPointPrice, sortPointEvent} from '../utils/point.js';
+import { sortType, userAction, updateType, filterType, DEFAULT_FILTER_TYPE } from '../const.js';
 import {filter} from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 
@@ -49,7 +49,6 @@ export default class BoardPresenter {
   get points(){
     this.#filterTypes = this.#filtersModel.filter;
     const points = this.#pointsModel.points;
-    console.log(points);
     const filteredPoints = filter[this.#filterTypes](points);
 
     switch (this.#currentSortType) {
@@ -78,7 +77,6 @@ export default class BoardPresenter {
         this.#pointsModel.updatePoint(updateType, update);
         break;
       case userAction.ADD_POINT:
-        console.log('lj,fdbb');
         this.#pointsModel.addPoint(updateType, update);
         break;
       case userAction.DELETE_POINT:
@@ -88,7 +86,6 @@ export default class BoardPresenter {
   };
 
   #handleModelEvent = (updateTypes, data) => {
-    console.log(updateTypes, data);
     // В зависимости от типа изменений решаем, что делать:
     // - обновить часть списка (например, когда поменялось описание)
     // - обновить список (например, когда задача ушла в архив)
@@ -97,7 +94,6 @@ export default class BoardPresenter {
     switch (updateTypes) {
       case updateType.PATCH:
         // - обновить часть списка (например, когда поменялось описание)
-        console.log(data.id);
         const offers = [...this.#offersModel.getOfferById(data.type,data.offers)];
         this.#pointPresenters.get(data.id).init(data,
           offers,

@@ -114,7 +114,6 @@ export default class PointPresenter{
   };
 
   #handleDeleteClick = (point) => {
-    console.log(point);
     this.#handleDataChange(
       userAction.DELETE_POINT,
       updateType.MINOR,

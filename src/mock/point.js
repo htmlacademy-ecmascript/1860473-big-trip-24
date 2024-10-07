@@ -130,7 +130,6 @@ const point = [
 
 function getRandomPoint(){
   return {...getRandomItem(point), id: nanoid()};
- // return getRandomItem(point);
 }
 
 export {getRandomPoint};

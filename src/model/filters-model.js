@@ -15,13 +15,4 @@ export default class FiltersModel extends Observable {
     this._notify(updateType, filter);
   }
 
- /* generateFilter(points){
-    return Object.entries(filter).map(
-      ([filterType,filterPoint]) => ({
-        type: filterType,
-        count: filterPoint(points).length,
-      }),
-    );
-  }*/
-
 }

@@ -28,8 +28,6 @@ export default class PointsModel extends Observable {
   }
 
   addPoint(updateType, update) {
-    console.log(update);
-    console.log('new');
     this.#points = [
       update,
       ...this.#points,

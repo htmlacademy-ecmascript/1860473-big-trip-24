@@ -62,7 +62,7 @@ function createEditPointTemplate(point, offer, isNewPoint) {
                       ${type}
                     </label>
 
-                        <input class="event__input event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${typeDestinations ? typeDestinations.name : ``}" list="destination-list-1">
+                       <input class="event__input event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${typeDestinations ? typeDestinations.name : ''}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       ${createDestinationListBlockTemplate()}
                     </datalist>
@@ -87,7 +87,7 @@ function createEditPointTemplate(point, offer, isNewPoint) {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">${isNewPoint ? `Cancel` : `Delete` }</button>
+                  <button class="event__reset-btn" type="reset">${isNewPoint ? 'Cancel' : 'Delete' }</button>
                 </header>
                 <section class="event__details">
                 ${offersList(typesOffers.offers,offer).length > 0 ? `
@@ -109,7 +109,7 @@ function createEditPointTemplate(point, offer, isNewPoint) {
                         ${createPicturesBlockTemplate(typeDestinations.pictures)}
                       </div>
                     </div>
-                  </section>` : ''}` : ``}
+                  </section>` : ''}` : ''}
 
                 </section>
               </form></li>`);
@@ -166,7 +166,6 @@ export default class PointForm extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    console.log(this.element);
     this.element.querySelector('form').addEventListener('submit',this.#formSubmitHandler);
     this.element.querySelector('#event-destination-1').addEventListener('change',this.#destinationChangeHandler);
     this.element.querySelector('.event__type-list').addEventListener('click',this.#offerChangeHandler);
@@ -177,8 +176,6 @@ export default class PointForm extends AbstractStatefulView {
     } else {
       this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     }
-
-
 
     this.#setDatePickerStart();
     this.#setDatePickerEnd();
@@ -191,7 +188,6 @@ export default class PointForm extends AbstractStatefulView {
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    console.log(PointForm.parseStateToPoint(this._state));
     this.#handleDeleteClick(PointForm.parseStateToPoint(this._state));
   }
 
@@ -211,7 +207,6 @@ export default class PointForm extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const destination = evt.target.value;
-    //console.log(this.#destinationsTypes.getDestinationByName(destination).id);
     this.updateElement({
       destination : this.#destinationsTypes.getDestinationByName(destination).id,
       typeDestinations : {...this.#destinationsTypes.getDestinationByName(destination)},
