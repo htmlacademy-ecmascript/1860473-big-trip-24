@@ -189,14 +189,14 @@ export default class PointForm extends AbstractStatefulView {
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleDeleteClick(PointForm.parseStateToPoint(this._state));
-  }
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const offersCheckedId = offersChecked.map(offers => offers.id);
 
-    if (JSON.stringify(this._state.offers) != JSON.stringify(offersCheckedId)){
+    if (JSON.stringify(this._state.offers) !== JSON.stringify(offersCheckedId)){
       this.updateElement({
         offers : offersCheckedId,
       });
@@ -282,7 +282,5 @@ export default class PointForm extends AbstractStatefulView {
   static parseStateToPoint(state,typesOffers,typeDestinations) {
     return {...state,typesOffers,typeDestinations};
   }
-
-
 
 }

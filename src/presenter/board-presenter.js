@@ -93,7 +93,6 @@ export default class BoardPresenter {
 
     switch (updateTypes) {
       case updateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
         const offers = [...this.#offersModel.getOfferById(data.type,data.offers)];
         this.#pointPresenters.get(data.id).init(data,
           offers,
@@ -101,13 +100,10 @@ export default class BoardPresenter {
           this.#offersModel);
         break;
       case updateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
         this.#clearBoard();
         this.#renderBoard();
         break;
       case updateType.MAJOR:
-        console.log(data.id);
-        // - обновить всю доску (например, при переключении фильтра)
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
@@ -133,7 +129,6 @@ export default class BoardPresenter {
 
 
   #clearBoard({resetSortType = false} = {}) {
-    const pointCount = this.points.length;
 
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
