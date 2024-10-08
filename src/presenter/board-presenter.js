@@ -4,7 +4,7 @@ import HeaderView from '../view/header-view.js';
 import SortView from '../view/sort-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
-import { sortPointDate, sortPointTime, sortPointPrice, sortPointEvent} from '../utils/point.js';
+import { sortPointDate, sortPointTime, sortPointPrice } from '../utils/point.js';
 import { SortType, UserAction, UpdateType, FilterType, DEFAULT_FILTER_TYPE } from '../const.js';
 import {filter} from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
@@ -93,9 +93,8 @@ export default class BoardPresenter {
 
     switch (updateTypes) {
       case UpdateType.PATCH:
-        const offers = [...this.#offersModel.getOfferById(data.type,data.offers)];
         this.#pointPresenters.get(data.id).init(data,
-          offers,
+          [...this.#offersModel.getOfferById(data.type,data.offers)],
           this.#destinationsModel,
           this.#offersModel);
         break;

@@ -194,7 +194,7 @@ export default class PointForm extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    const offersCheckedId = offersChecked.map(offers => offers.id);
+    const offersCheckedId = offersChecked.map((offers) => (offers.id));
 
     if (JSON.stringify(this._state.offers) !== JSON.stringify(offersCheckedId)){
       this.updateElement({
