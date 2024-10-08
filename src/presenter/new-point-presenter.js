@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { updateType, userAction, newPOINT } from '../const';
+import { UpdateType, UserAction, NewPOINT } from '../const';
 import { remove, render, RenderPosition } from '../framework/render';
 import PointForm from '../view/point-form-view.js';
 
@@ -34,7 +34,7 @@ export default class NewPointPresenter {
     }
 
     this.#pointEditComponent = new PointForm({
-      point: newPOINT,
+      point: NewPOINT,
       offers: '',
       destinations: this.#destinations,
       allOffers: this.#offers,
@@ -68,8 +68,8 @@ export default class NewPointPresenter {
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
-      userAction.ADD_POINT,
-      updateType.MINOR,
+      UserAction.ADD_POINT,
+      UpdateType.MINOR,
       { ...point, id: nanoid() },
     );
     this.destroy();

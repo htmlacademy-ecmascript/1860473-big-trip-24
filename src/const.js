@@ -1,15 +1,15 @@
-const eventType = ['taxi','bus','train','ship','drive','flight','check-in','sightseeing','restaurant'];
-const destinationList = ['Nagasaki','Munich','Chamonix','Rome','Moscow','Den Haag','Oslo','Naples'];
+const EventType = ['taxi','bus','train','ship','drive','flight','check-in','sightseeing','restaurant'];
+const DestinationList = ['Nagasaki','Munich','Chamonix','Rome','Moscow','Den Haag','Oslo','Naples'];
 
 
-const filterType = {
+const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
   PAST: 'past'
 };
 
-const sortType = {
+const SortType = {
   DAY : 'day',
   EVENT : 'event',
   TIME : 'time',
@@ -17,7 +17,7 @@ const sortType = {
   OFFERS : 'offers'
 };
 
-const newPOINT = {
+const NewPOINT = {
   id: '',
   basePrice: 0,
   dateFrom: null,
@@ -28,20 +28,20 @@ const newPOINT = {
   type: 'flight',
 };
 
-const userAction = {
+const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
   ADD_POINT: 'ADD_POINT',
   DELETE_POINT: 'DELETE_POINT',
 };
 
-const updateType = {
+const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
 };
 
 
-const DEFAULT_FILTER_TYPE = filterType.EVERYTHING;
-const DEFAULT_SORTING_TYPE = sortType.DAY;
+const DEFAULT_FILTER_TYPE = FilterType.EVERYTHING;
+const DEFAULT_SORTING_TYPE = SortType.DAY;
 
-export {eventType, destinationList, filterType, sortType, userAction, updateType, newPOINT, DEFAULT_FILTER_TYPE, DEFAULT_SORTING_TYPE };
+export {EventType, DestinationList, FilterType, SortType, UserAction, UpdateType, NewPOINT, DEFAULT_FILTER_TYPE, DEFAULT_SORTING_TYPE };

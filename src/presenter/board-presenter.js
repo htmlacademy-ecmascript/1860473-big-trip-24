@@ -5,7 +5,7 @@ import SortView from '../view/sort-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
 import { sortPointDate, sortPointTime, sortPointPrice, sortPointEvent} from '../utils/point.js';
-import { sortType, userAction, updateType, filterType, DEFAULT_FILTER_TYPE } from '../const.js';
+import { SortType, UserAction, UpdateType, FilterType, DEFAULT_FILTER_TYPE } from '../const.js';
 import {filter} from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 
@@ -20,8 +20,8 @@ export default class BoardPresenter {
 
   #pointPresenters = new Map();
   #sortComponent = null;
-  #currentSortType = null;
-  #filterTypes = filterType.EVERYTHING;
+  #currentSortType = SortType.DAY;
+  #filterTypes = FilterType.EVERYTHING;
 
   #newPointPresenter = null;
 
@@ -52,14 +52,14 @@ export default class BoardPresenter {
     const filteredPoints = filter[this.#filterTypes](points);
 
     switch (this.#currentSortType) {
-      case sortType.DAY:
+      case SortType.DAY:
         return filteredPoints.sort(sortPointDate);
-      case sortType.PRICE:
+      case SortType.PRICE:
         return filteredPoints.sort(sortPointPrice);
-      case sortType.TIME:
+      case SortType.TIME:
         return filteredPoints.sort(sortPointTime);
-      case sortType.EVENT:
-        return filteredPoints.sort(sortPointEvent);
+      /*case SortType.EVENT:
+        return filteredPoints.sort(sortPointEvent);*/
 
     }
 
@@ -73,13 +73,13 @@ export default class BoardPresenter {
     // update - обновленные данные
 
     switch (actionType) {
-      case userAction.UPDATE_POINT:
+      case UserAction.UPDATE_POINT:
         this.#pointsModel.updatePoint(updateType, update);
         break;
-      case userAction.ADD_POINT:
+      case UserAction.ADD_POINT:
         this.#pointsModel.addPoint(updateType, update);
         break;
-      case userAction.DELETE_POINT:
+      case UserAction.DELETE_POINT:
         this.#pointsModel.deletePoint(updateType, update);
         break;
     }
@@ -92,18 +92,19 @@ export default class BoardPresenter {
     // - обновить всю доску (например, при переключении фильтра)
 
     switch (updateTypes) {
-      case updateType.PATCH:
+      case UpdateType.PATCH:
         const offers = [...this.#offersModel.getOfferById(data.type,data.offers)];
         this.#pointPresenters.get(data.id).init(data,
           offers,
           this.#destinationsModel,
           this.#offersModel);
         break;
-      case updateType.MINOR:
+      case UpdateType.MINOR:
+        this.#currentSortType = SortType.DAY;
         this.#clearBoard();
         this.#renderBoard();
         break;
-      case updateType.MAJOR:
+      case UpdateType.MAJOR:
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
@@ -122,8 +123,8 @@ export default class BoardPresenter {
 
 
   createNewPoint() {
-    this.#currentSortType = sortType.DAY;
-    this.#filtersModel.setFilter(updateType.MAJOR, DEFAULT_FILTER_TYPE);
+    this.#currentSortType = SortType.DAY;
+    this.#filtersModel.setFilter(UpdateType.MAJOR, DEFAULT_FILTER_TYPE);
     this.#newPointPresenter.init();
   }
 
@@ -137,7 +138,7 @@ export default class BoardPresenter {
     remove(this.#noPointComponent);
 
     if (resetSortType) {
-      this.#currentSortType = sortType.DEFAULT;
+      this.#currentSortType = SortType.DAY;
     }
   }
 

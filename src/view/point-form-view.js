@@ -1,18 +1,18 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {timeDate} from '../utils/point.js';
-import {eventType,destinationList} from '../const.js';
+import {EventType, DestinationList} from '../const.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const createEventTypeBlockTemplate = () => `
-    ${eventType.map((type) => `<div class="event__type-item">
+    ${EventType.map((type) => `<div class="event__type-item">
                           <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
                           <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
                         </div>`).join('')}
 `;
 
 const createDestinationListBlockTemplate = () => `
-    ${destinationList.map((type) => `<option value="${type}"></option>`).join('')}
+    ${DestinationList.map((type) => `<option value="${type}"></option>`).join('')}
 `;
 
 const createPicturesBlockTemplate = (pictures) => `
@@ -62,7 +62,7 @@ function createEditPointTemplate(point, offer, isNewPoint) {
                       ${type}
                     </label>
 
-                       <input class="event__input event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${typeDestinations ? typeDestinations.name : ''}" list="destination-list-1">
+                       <input required class="event__input event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${typeDestinations ? typeDestinations.name : ''}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       ${createDestinationListBlockTemplate()}
                     </datalist>
@@ -83,7 +83,7 @@ function createEditPointTemplate(point, offer, isNewPoint) {
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1"   type="text" name="event-price" value="${basePrice}">
+                    <input class="event__input  event__input--price" id="event-price-1" required  type="text" min="1" max="100000" name="event-price" value="${basePrice}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -207,10 +207,15 @@ export default class PointForm extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const destination = evt.target.value;
-    this.updateElement({
-      destination : this.#destinationsTypes.getDestinationByName(destination).id,
-      typeDestinations : {...this.#destinationsTypes.getDestinationByName(destination)},
-    });
+    if (this.#destinationsTypes.getDestinationByName(destination)){
+      this.updateElement({
+        destination : this.#destinationsTypes.getDestinationByName(destination).id,
+        typeDestinations : {...this.#destinationsTypes.getDestinationByName(destination)},
+      });
+    } else {
+      evt.target.value = '';
+    }
+
   };
 
   #offerChangeHandler = (evt) => {
