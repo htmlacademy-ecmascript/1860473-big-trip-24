@@ -1,20 +1,17 @@
-import { filter } from '../utils/filter.js';
+import Observable from '../framework/observable.js';
+import {FilterType} from '../const.js';
 
-export default class FiltersModel {
+export default class FiltersModel extends Observable {
 
-  #filter = filter;
+  #filter = FilterType.EVERYTHING;
 
-  get filters(){
+  get filter(){
     return this.#filter;
   }
 
-  generateFilter(points){
-    return Object.entries(filter).map(
-      ([filterType,filterPoint]) => ({
-        type: filterType,
-        count: filterPoint(points).length,
-      }),
-    );
+  setFilter(updateType, filter){
+    this.#filter = filter;
+    this._notify(updateType, filter);
   }
 
 }

@@ -1,6 +1,8 @@
 import {replace, render, remove} from '../framework/render.js';
 import PointForm from '../view/point-form-view.js';
 import ItemListView from '../view/item-list-view.js';
+import { UserAction, UpdateType } from '../const.js';
+import {isDatesEqual} from '../utils/point.js';
 
 const Mode = {
   DEFAULT : 'DEFAULT',
@@ -50,9 +52,12 @@ export default class PointPresenter{
       offers: this.#offers,
       destinations: this.#destinations,
       allOffers: this.#allOffers,
+      isNewPoint: false,
       onFormSubmit: this.#handleFormSubmit,
-      onCancelClick: this.#handleCancelClick
+      onCancelClick: this.#handleCancelClick,
+      onDeleteClick: this.#handleDeleteClick
     });
+
 
     if (!prevPointComponent || !prevPointFormComponent){
       render(this.#itemComponent, this.#listViewComponent);
@@ -108,17 +113,35 @@ export default class PointPresenter{
     this.#Mode = Mode.DEFAULT;
   };
 
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
+  };
+
   #handleEditClick = () => {
     this.#replaceCardToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
+
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite : !this.#point.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.PATCH,
+      {...this.#point, isFavorite : !this.#point.isFavorite});
   };
 
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate =
+      !isDatesEqual(this.#point.dateFrom, update.dateFrom) || !isDatesEqual(this.#point.basePrice, update.basePrice) || !isDatesEqual(this.#point.dateTo, update.dateTo);
+
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update);
     this.#replaceFormToCard();
   };
 
