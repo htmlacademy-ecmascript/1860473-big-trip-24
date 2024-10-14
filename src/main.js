@@ -55,13 +55,13 @@ boardPresenter.init();
 filterPresenter.init();
 
 destinationsModel.init()
- .finally(() => {
+  .finally(() => {
     offersModel.init()
       .finally(() => {
         pointsModel.init()
           .finally(() => {
-          render(newPointButtonComponent, tripMainElement);
+            render(newPointButtonComponent, tripMainElement);
           });
       });
- });
+  });
 

@@ -41,10 +41,10 @@ export default class PointsModel extends Observable {
       const updatePoint = this.#adaptToClient(response);
 
       this.#points = [
-            ...this.#points.slice(0, index),
-            updatePoint,
-            ...this.#points.slice(index + 1),
-          ];
+        ...this.#points.slice(0, index),
+        updatePoint,
+        ...this.#points.slice(index + 1),
+      ];
 
       this._notify(updateType, updatePoint);
     } catch(err) {
