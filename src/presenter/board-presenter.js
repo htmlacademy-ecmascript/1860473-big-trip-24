@@ -145,18 +145,6 @@ export default class BoardPresenter {
     }
   }
 
- /* #handlePointChange = (updatedPoint) =>{
-
-
-    const offers = [...this.#offersModel.getOfferById(updatedPoint.type,updatedPoint.offers)];
-
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint,
-      offers,
-      this.#destinationsModel,
-      this.#offersModel
-    );
-  };*/
-
   #handleModeChange = () => {
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
@@ -223,7 +211,6 @@ export default class BoardPresenter {
     }
     this.#renderSort();
     for (let i = 0; i < this.points.length; i++) {
-      console.log(this.points[i].type);
       const offers = [...this.#offersModel.getOfferById(this.points[i].type,this.points[i].offers)];
 
       this.#renderItem(this.points[i],

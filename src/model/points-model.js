@@ -15,8 +15,6 @@ export default class PointsModel extends Observable {
     this.#pointsApiService = pointsApiService;
   }
 
-
-
   get points(){
     return this.#points;
   }
@@ -34,20 +32,13 @@ export default class PointsModel extends Observable {
 
   async updatePoint(updateType, update) {
     const index = this.#points.findIndex((point) => point.id === update.id);
-    console.log(index);
-    console.log('666');
     if (index === -1) {
       throw new Error('Can\'t update unexisting point');
     }
 
     try {
-      console.log(update);
       const response = await this.#pointsApiService.updatePoint(update);
-      console.log(response);
       const updatePoint = this.#adaptToClient(response);
-
-
-      console.log(updatePoint);
 
       this.#points = [
             ...this.#points.slice(0, index),
@@ -88,8 +79,6 @@ export default class PointsModel extends Observable {
   }
 
   #adaptToClient(point) {
-    console.log('11111');
-    console.log(point['base_price']);
     const adaptedPoint = {...point,
       basePrice: point['base_price'],
       dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'], // На клиенте дата хранится как экземпляр Date

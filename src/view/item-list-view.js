@@ -7,7 +7,6 @@ const createOffersBlockTemplate = (offer) => `
 
 
 function createItemListTemplate(point, destination, offer) {
- console.log(destination);
   const {name} = destination;
   const {basePrice, dateFrom, dateTo, isFavorite, type} = point;
   const favorite = isFavorite ? 'event__favorite-btn--active' : '';

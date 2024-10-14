@@ -3,7 +3,7 @@ import ApiService from './framework/api-service.js';
 const Method = {
   GET : 'GET',
   PUT: 'PUT',
-}
+};
 
 export default class PointsApiService extends ApiService{
 
@@ -20,7 +20,6 @@ export default class PointsApiService extends ApiService{
   }
 
   async updatePoint(point){
-    console.log(this.#adaptToServer(point));
     const response = await this._load({
       url: `points/${point.id}`,
       method: Method.PUT,
@@ -29,7 +28,6 @@ export default class PointsApiService extends ApiService{
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-    console.log(parsedResponse);
     return parsedResponse;
 
   }

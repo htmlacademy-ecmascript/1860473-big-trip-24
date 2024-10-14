@@ -6,7 +6,7 @@ import OffersModel from './model/offers-model.js';
 import FiltersModel from './model/filters-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import NewPointButtonView from './view/new-point-button-veiw.js';
-import PointsApiService from './point-api-service.js'
+import PointsApiService from './point-api-service.js';
 
 const AUTHORIZATION = 'Basic fger8ki98pfl2';
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
@@ -51,19 +51,17 @@ function handleNewPointButtonClick() {
 }
 
 
-
 boardPresenter.init();
 filterPresenter.init();
 
 destinationsModel.init()
  .finally(() => {
-  offersModel.init()
-    .finally(() => {
-      pointsModel.init()
-        .finally(() => {
+    offersModel.init()
+      .finally(() => {
+        pointsModel.init()
+          .finally(() => {
           render(newPointButtonComponent, tripMainElement);
-        });
-    });
+          });
+      });
  });
-
 

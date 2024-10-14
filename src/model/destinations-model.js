@@ -17,9 +17,7 @@ export default class DestinationsModel {
     try {
       const destination = await this.#pointsApiService.destinations;
       this.#destination = destination;
-      console.log(this.#destination);
     } catch(err){
-      console.log('111');
       this.#destination = [];
     }
 
