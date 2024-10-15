@@ -8,6 +8,7 @@ import { sortPointDate, sortPointTime, sortPointPrice } from '../utils/point.js'
 import { SortType, UserAction, UpdateType, FilterType, DEFAULT_FILTER_TYPE } from '../const.js';
 import {filter} from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
+import LoadingView from '../view/loading-view.js';
 
 
 export default class BoardPresenter {
@@ -17,15 +18,14 @@ export default class BoardPresenter {
   #filtersModel = null;
   #destinationsModel = null;
   #noPointComponent = null;
-
   #pointPresenters = new Map();
   #sortComponent = null;
   #currentSortType = SortType.DAY;
   #filterTypes = FilterType.EVERYTHING;
-
   #newPointPresenter = null;
-
   #listViewComponent = new ListView();
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
 
   constructor({boardContainer,pointsModel,offersModel,destinationsModel,filtersModel, onNewPointDestroy}) {
     this.#boardContainer = boardContainer;
@@ -58,8 +58,6 @@ export default class BoardPresenter {
         return filteredPoints.sort(sortPointPrice);
       case SortType.TIME:
         return filteredPoints.sort(sortPointTime);
-      /*case SortType.EVENT:
-        return filteredPoints.sort(sortPointEvent);*/
 
     }
 
@@ -107,6 +105,11 @@ export default class BoardPresenter {
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
+        break;
     }
   };
 
@@ -135,31 +138,26 @@ export default class BoardPresenter {
 
     remove(this.#sortComponent);
     remove(this.#noPointComponent);
+    remove(this.#loadingComponent);
 
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
     }
   }
 
-  #handlePointChange = (updatedPoint) =>{
-
-
-    const offers = [...this.#offersModel.getOfferById(updatedPoint.type,updatedPoint.offers)];
-
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint,
-      offers,
-      this.#destinationsModel,
-      this.#offersModel
-    );
-  };
-
   #handleModeChange = () => {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
+
+  #renderLoading(){
+    render(this.#loadingComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+  }
 
   #renderItem(point,offers,destinations, allOffers){
 
     const pointPresenter = new PointPresenter({
+
       listViewComponent : this.#listViewComponent.element,
       onDataChange : this.#handleViewAction,
       onModeChange : this.#handleModeChange,
@@ -201,6 +199,12 @@ export default class BoardPresenter {
 
   #renderBoard() {
     render(this.#listViewComponent, this.#boardContainer);
+
+    if (this.#isLoading){
+      this.#renderLoading();
+      return;
+    }
+
     if (this.points.length === 0){
       this.#renderNoPoints();
       return;

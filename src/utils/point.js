@@ -84,11 +84,11 @@ function timeDiffMilliseconds(time1, time2){
 }
 
 function sortPointTime(pointA, pointB) {
-  return timeDiffMilliseconds(pointA.dateFrom,pointA.dateTo) - timeDiffMilliseconds(pointB.dateFrom,pointB.dateTo);
+  return timeDiffMilliseconds(pointB.dateFrom,pointB.dateTo) - timeDiffMilliseconds(pointA.dateFrom,pointA.dateTo);
 }
 
 function sortPointPrice(pointA, pointB) {
-  return pointA.basePrice - pointB.basePrice;
+  return pointB.basePrice - pointA.basePrice;
 }
 
 function sortPointEvent(pointA, pointB) {
