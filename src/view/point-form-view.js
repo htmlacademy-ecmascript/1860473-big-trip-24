@@ -12,7 +12,7 @@ const createEventTypeBlockTemplate = () => `
 `;
 
 const createDestinationListBlockTemplate = (destination) => `
-    ${destination.map(item => `<option value="${item.name}"></option>`).join('')}
+    ${destination.map((item) => `<option value="${item.name}"></option>`).join('')}
 `;
 
 const createPicturesBlockTemplate = (pictures) => `
@@ -39,6 +39,7 @@ function createEditPointTemplate(point, offer, isNewPoint, destinationTypes) {
 
   const dateFromItem = timeDate(dateFrom,'DD/MM/YY hh:mm');
   const dateToItem = timeDate(dateTo,'DD/MM/YY hh:mm');
+  const deleteButton = isDeleting ? 'Deleting...' : 'Delete';
 
   return (
     `<li class="trip-events__item"><form class="event event--edit" action="#" method="post">
@@ -89,7 +90,7 @@ function createEditPointTemplate(point, offer, isNewPoint, destinationTypes) {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" ${isDisabled ? 'disabled' : ''} type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
-                  <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''} >${isNewPoint ? 'Cancel' : isDeleting ? 'Deleting...' : 'Delete' }</button>
+                  <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''} >${isNewPoint ? 'Cancel' : deleteButton }</button>
                 </header>
                 <section class="event__details">
                 ${offersList(typesOffers.offers,offer).length > 0 ? `
@@ -120,7 +121,6 @@ function createEditPointTemplate(point, offer, isNewPoint, destinationTypes) {
 export default class PointForm extends AbstractStatefulView {
   #allOffers = null;
   #offers = null;
-  #point = null;
   #destinations = null;
   #handleFormSubmit = null;
   #handleCancelClick = null;
@@ -135,7 +135,6 @@ export default class PointForm extends AbstractStatefulView {
     super();
     this.#allOffersTypes = allOffers;
     this.#isNewPoint = isNewPoint;
-    this.#point = point;
     this.#allOffers = this.#allOffersTypes.getOfferByType(point.type);
     this.#destinationsTypes = destinations;
     this.#destinations = this.#destinationsTypes.getDestinationById(point.destination);
@@ -194,10 +193,15 @@ export default class PointForm extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    if ((this._state.dateFrom === null) || (this._state.dateTo === null)){
-      alert ('Заполните все поля');
+    if (this._state.dateFrom === null){
+      this.element.querySelector('#event-start-time-1').style.border = '1px solid red';
       return;
-    };
+    }
+
+    if (this._state.dateTo === null){
+      this.element.querySelector('#event-end-time-1').style.border = '1px solid red';
+      return;
+    }
 
     const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const offersCheckedId = offersChecked.map((offers) => (offers.id));
