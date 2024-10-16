@@ -1,4 +1,5 @@
 import {RenderPosition, render, remove} from '../framework/render.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import ListView from '../view/list-view.js';
 import HeaderView from '../view/header-view.js';
 import SortView from '../view/sort-view.js';
@@ -9,6 +10,11 @@ import { SortType, UserAction, UpdateType, FilterType, DEFAULT_FILTER_TYPE } fro
 import {filter} from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import LoadingView from '../view/loading-view.js';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 
 export default class BoardPresenter {
@@ -26,6 +32,10 @@ export default class BoardPresenter {
   #listViewComponent = new ListView();
   #loadingComponent = new LoadingView();
   #isLoading = true;
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   constructor({boardContainer,pointsModel,offersModel,destinationsModel,filtersModel, onNewPointDestroy}) {
     this.#boardContainer = boardContainer;
@@ -64,31 +74,40 @@ export default class BoardPresenter {
     return filteredPoints;
   }
 
-  #handleViewAction = (actionType, updateType, update) => {
-    // Здесь будем вызывать обновление модели.
-    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
-    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
-    // update - обновленные данные
+  #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
 
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.updatePoint(updateType, update);
+        this.#pointPresenters.get(update.id).setSaving();
+        try {
+          await this.#pointsModel.updatePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
       case UserAction.ADD_POINT:
-        this.#pointsModel.addPoint(updateType, update);
+        this.#newPointPresenter.setSaving();
+        try {
+          await this.#pointsModel.addPoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
       case UserAction.DELETE_POINT:
-        this.#pointsModel.deletePoint(updateType, update);
+        this.#pointPresenters.get(update.id).setDeleting();
+        try {
+          await this.#pointsModel.deletePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
     }
+
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateTypes, data) => {
-    // В зависимости от типа изменений решаем, что делать:
-    // - обновить часть списка (например, когда поменялось описание)
-    // - обновить список (например, когда задача ушла в архив)
-    // - обновить всю доску (например, при переключении фильтра)
-
     switch (updateTypes) {
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data,
@@ -133,6 +152,7 @@ export default class BoardPresenter {
 
   #clearBoard({resetSortType = false} = {}) {
 
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
