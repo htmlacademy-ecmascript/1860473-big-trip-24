@@ -1,12 +1,9 @@
 import Observable from '../framework/observable.js';
-//import {getRandomPoint} from '../mock/point.js';
 import { UpdateType } from '../const.js';
 
-//const PointCount = 4;
 
 export default class PointsModel extends Observable {
   #pointsApiService = null;
-  //#points = Array.from({length : PointCount}, getRandomPoint);
   #points = [];
 
 
@@ -68,12 +65,6 @@ export default class PointsModel extends Observable {
       throw new Error('Can\'t update task');
     }
 
-    /*this.#points = [
-      update,
-      ...this.#points,
-    ];*/
-
-
   }
 
   async deletePoint(updateType, update) {
@@ -96,12 +87,6 @@ export default class PointsModel extends Observable {
       throw new Error('Can\'t update task');
     }
 
-    /*this.#points = [
-      ...this.#points.slice(0, index),
-      ...this.#points.slice(index + 1),
-    ];
-
-    this._notify(updateType);*/
   }
 
   #adaptToClient(point) {
@@ -113,7 +98,6 @@ export default class PointsModel extends Observable {
 
     };
 
-    // Ненужные ключи мы удаляем
     delete adaptedPoint['base_price'];
     delete adaptedPoint['date_from'];
     delete adaptedPoint['date_to'];

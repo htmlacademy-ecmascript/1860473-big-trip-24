@@ -1,5 +1,3 @@
-//import {destination} from '../mock/destination.js';
-
 export default class DestinationsModel {
   #pointsApiService = null;
 

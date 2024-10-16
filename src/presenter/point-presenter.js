@@ -69,7 +69,6 @@ export default class PointPresenter{
     }
 
     if (this.#Mode === Mode.EDITING){
-      //replace(this.#pointFormComponent,prevPointFormComponent);
       replace(this.#itemComponent, prevPointFormComponent);
       this.#Mode = Mode.DEFAULT;
     }
@@ -179,7 +178,6 @@ export default class PointPresenter{
       UserAction.UPDATE_POINT,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update);
-    //this.#replaceFormToCard();
   };
 
 }
