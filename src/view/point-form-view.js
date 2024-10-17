@@ -193,15 +193,6 @@ export default class PointForm extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    if (this._state.dateFrom === null){
-      this.element.querySelector('#event-start-time-1').style.border = '1px solid red';
-      return;
-    }
-
-    if (this._state.dateTo === null){
-      this.element.querySelector('#event-end-time-1').style.border = '1px solid red';
-      return;
-    }
 
     const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const offersCheckedId = offersChecked.map((offers) => (offers.id));

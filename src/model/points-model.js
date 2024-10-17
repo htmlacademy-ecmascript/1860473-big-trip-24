@@ -21,7 +21,7 @@ export default class PointsModel extends Observable {
       const points = await this.#pointsApiService.points;
       this.#points = points.map(this.#adaptToClient);
     } catch(err){
-      this.#points = [];
+      return this.#points;
     }
 
     this._notify(UpdateType.INIT);

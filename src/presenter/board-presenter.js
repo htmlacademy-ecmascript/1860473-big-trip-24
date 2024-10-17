@@ -94,7 +94,7 @@ export default class BoardPresenter {
         try {
           await this.#pointsModel.addPoint(updateType, update);
         } catch(err) {
-          this.#pointPresenter.get(update.id).setAborting();
+          this.#newPointPresenter.setAborting();
         }
         break;
       case UserAction.DELETE_POINT:
@@ -135,17 +135,15 @@ export default class BoardPresenter {
     }
   };
 
-  async init() {
-
-    await this.#destinationsModel.init();
-    await this.#offersModel.init();
-    await this.#pointsModel.init();
+  init() {
 
     const siteHeaderTopElement = document.querySelector('.trip-main');
 
 
     render(new HeaderView(), siteHeaderTopElement, RenderPosition.AFTERBEGIN);
     render(this.#newPointButtonComponent, siteHeaderTopElement, RenderPosition.BEFOREEND);
+
+    this.#renderBoard();
 
   }
 

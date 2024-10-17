@@ -52,3 +52,13 @@ function handleNewPointButtonClick() {
 filterPresenter.init();
 boardPresenter.init();
 
+destinationsModel.init()
+  .finally(() => {
+    offersModel.init()
+      .finally(() => {
+        pointsModel.init()
+          .finally(() => {
+           // render(newPointButtonComponent, tripMainElement);
+          });
+      });
+  });
