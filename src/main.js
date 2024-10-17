@@ -57,8 +57,6 @@ destinationsModel.init()
     offersModel.init()
       .finally(() => {
         pointsModel.init()
-          .finally(() => {
-           // render(newPointButtonComponent, tripMainElement);
-          });
+          .finally(() => {});
       });
   });
