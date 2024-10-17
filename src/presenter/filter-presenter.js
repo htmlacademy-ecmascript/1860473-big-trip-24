@@ -39,7 +39,6 @@ export default class FilterPresenter {
     });
 
     if (prevFilterComponent === null) {
-      console.log('11');
       render(this.#filterComponent, this.#filterContainer, RenderPosition.BEFOREBEGIN);
       return;
     }

@@ -5,7 +5,6 @@ import HeaderView from '../view/header-view.js';
 import SortView from '../view/sort-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
-import NewPointButtonView from '../view/new-point-button-veiw.js';
 import { sortPointDate, sortPointTime, sortPointPrice } from '../utils/point.js';
 import { SortType, UserAction, UpdateType, FilterType, DEFAULT_FILTER_TYPE } from '../const.js';
 import {filter} from '../utils/filter.js';
@@ -148,8 +147,6 @@ export default class BoardPresenter {
     render(new HeaderView(), siteHeaderTopElement, RenderPosition.AFTERBEGIN);
     render(this.#newPointButtonComponent, siteHeaderTopElement, RenderPosition.BEFOREEND);
 
-   // this.#renderBoard();
-
   }
 
 
@@ -227,7 +224,6 @@ export default class BoardPresenter {
 
 
   #renderBoard() {
-    console.log('111555');
     render(this.#listViewComponent, this.#boardContainer);
 
     if (this.#isLoading){
