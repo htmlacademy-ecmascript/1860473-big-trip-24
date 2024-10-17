@@ -1,5 +1,3 @@
-//import {offer} from '../mock/offer.js';
-
 export default class OffersModel {
   #pointsApiService = null;
   #offer = [];
