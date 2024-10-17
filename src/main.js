@@ -39,6 +39,7 @@ const boardPresenter = new BoardPresenter({
   offersModel,
   destinationsModel,
   filtersModel,
+  newPointButtonComponent,
   onNewPointDestroy: handleNewPointFormClose});
 
 function handleNewPointFormClose() {
@@ -50,18 +51,6 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.toggleAttribute('disabled', true);
 }
 
-
-boardPresenter.init();
 filterPresenter.init();
-
-destinationsModel.init()
-  .finally(() => {
-    offersModel.init()
-      .finally(() => {
-        pointsModel.init()
-          .finally(() => {
-            render(newPointButtonComponent, tripMainElement);
-          });
-      });
-  });
+boardPresenter.init();
 

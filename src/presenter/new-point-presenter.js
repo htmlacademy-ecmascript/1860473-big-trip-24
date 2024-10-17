@@ -43,6 +43,7 @@ export default class NewPointPresenter {
 
     });
 
+
     render(
       this.#pointEditComponent,
       this.#pointListContainer,
