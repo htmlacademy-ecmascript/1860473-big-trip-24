@@ -35,9 +35,11 @@ export default class BoardPresenter {
   #loadingComponent = new LoadingView({
     loadType: LoadType.LOADING
   });
+
   #failedComponent = new LoadingView({
     loadType: LoadType.FAILED
   });
+
   #isLoading = true;
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,

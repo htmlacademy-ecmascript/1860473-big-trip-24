@@ -168,7 +168,7 @@ export default class PointForm extends AbstractStatefulView {
     this.element.querySelector('#event-destination-1').addEventListener('change',this.#destinationChangeHandler);
     this.element.querySelector('.event__type-list').addEventListener('click',this.#offerChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change',this.#priceChangeHandler);
-    if ( this.element.querySelector('.event__available-offers') ) {
+    if (this.element.querySelector('.event__available-offers')) {
       this.element.querySelector('.event__available-offers').addEventListener('click',this.#offerItemChangeHandler);
     }
     if (this.#isNewPoint){
@@ -233,18 +233,18 @@ export default class PointForm extends AbstractStatefulView {
     evt.preventDefault();
     const offerElement = evt.target.closest('.event__offer-selector');
     if (offerElement){
-    if (offerElement.querySelector('.event__offer-checkbox:checked')){
-      offerElement.querySelector('.event__offer-checkbox').checked = false;
-    } else {
-      offerElement.querySelector('.event__offer-checkbox').checked = true;
-    }
-    const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+      if (offerElement.querySelector('.event__offer-checkbox:checked')){
+        offerElement.querySelector('.event__offer-checkbox').checked = false;
+      } else {
+        offerElement.querySelector('.event__offer-checkbox').checked = true;
+      }
+      const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
 
-    const offersCheckedId = offersChecked.map((offers) => (offers.id));
-    this.updateElement({
-      offers : offersCheckedId,
-    });
-  }
+      const offersCheckedId = offersChecked.map((offers) => (offers.id));
+      this.updateElement({
+        offers : offersCheckedId,
+      });
+    }
 
   };
 
