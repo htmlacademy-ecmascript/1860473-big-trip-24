@@ -1,6 +1,4 @@
 const EventType = ['taxi','bus','train','ship','drive','flight','check-in','sightseeing','restaurant'];
-const DestinationList = ['Nagasaki','Munich','Chamonix','Rome','Moscow','Den Haag','Oslo','Naples'];
-
 
 const FilterType = {
   EVERYTHING: 'everything',
@@ -18,7 +16,6 @@ const SortType = {
 };
 
 const NewPOINT = {
-  id: '',
   basePrice: 0,
   dateFrom: null,
   dateTo: null,
@@ -39,10 +36,16 @@ const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+  FAILED: 'FAILED',
+};
+
+const LoadType = {
+  LOADING: 'LOADING',
+  FAILED: 'FAILED',
 };
 
 
 const DEFAULT_FILTER_TYPE = FilterType.EVERYTHING;
 const DEFAULT_SORTING_TYPE = SortType.DAY;
 
-export {EventType, DestinationList, FilterType, SortType, UserAction, UpdateType, NewPOINT, DEFAULT_FILTER_TYPE, DEFAULT_SORTING_TYPE };
+export {EventType, FilterType, SortType, UserAction, UpdateType, NewPOINT, DEFAULT_FILTER_TYPE, DEFAULT_SORTING_TYPE, LoadType };

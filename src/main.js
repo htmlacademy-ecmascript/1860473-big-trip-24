@@ -1,4 +1,3 @@
-import {render} from './framework/render.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
@@ -17,7 +16,6 @@ const newPointButtonComponent = new NewPointButtonView({
 
 const siteHeaderElement = document.querySelector('.trip-controls__filters');
 const siteContentElement = document.querySelector('.trip-events');
-const tripMainElement = document.querySelector('.trip-main');
 const pointsModel = new PointsModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
 });
@@ -39,6 +37,7 @@ const boardPresenter = new BoardPresenter({
   offersModel,
   destinationsModel,
   filtersModel,
+  newPointButtonComponent,
   onNewPointDestroy: handleNewPointFormClose});
 
 function handleNewPointFormClose() {
@@ -50,18 +49,5 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.toggleAttribute('disabled', true);
 }
 
-
-boardPresenter.init();
 filterPresenter.init();
-
-destinationsModel.init()
-  .finally(() => {
-    offersModel.init()
-      .finally(() => {
-        pointsModel.init()
-          .finally(() => {
-            render(newPointButtonComponent, tripMainElement);
-          });
-      });
-  });
-
+boardPresenter.init();

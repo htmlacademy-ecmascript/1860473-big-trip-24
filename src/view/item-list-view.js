@@ -82,6 +82,8 @@ export default class ItemListView extends AbstractView {
 
   #favoriteClickHandler = (evt) => {
     evt.preventDefault();
+    const favoriteButton = evt.target.closest('.event__favorite-btn');
+    favoriteButton.toggleAttribute('disabled', true);
     this.#handleFavoriteClick();
   };
 
