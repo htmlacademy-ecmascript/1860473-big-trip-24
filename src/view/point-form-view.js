@@ -263,6 +263,7 @@ export default class PointForm extends AbstractStatefulView {
     );
   }
 
+
   #setDatePickerEnd(){
     this.#datePickerEnd = flatpickr(
       this.element.querySelector('#event-end-time-1'),
@@ -277,16 +278,14 @@ export default class PointForm extends AbstractStatefulView {
     );
   }
 
-  #dateStartChangeHandler = ([userDate]) => {
-    this.updateElement({
-      dateFrom: userDate,
-    });
+  #dateStartChangeHandler = ([dateFrom]) => {
+    this._setState({dateFrom});
+    this.#datePickerEnd.set('minDate', this._state.dateFrom);
   };
 
-  #dateEndChangeHandler = ([userDate]) => {
-    this.updateElement({
-      dateTo: userDate,
-    });
+  #dateEndChangeHandler = ([dateTo]) => {
+    this._setState({dateTo});
+    this.#datePickerStart.set('maxDate', this._state.dateTo);
   };
 
   static parsePointToState(point,typesOffers,typeDestinations) {
