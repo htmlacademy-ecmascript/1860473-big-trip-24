@@ -49,7 +49,6 @@ export default class PointPresenter{
 
     this.#pointFormComponent = new PointForm({
       point: this.#point,
-      offers: this.#offers,
       destinations: this.#destinations,
       allOffers: this.#allOffers,
       isNewPoint: false,

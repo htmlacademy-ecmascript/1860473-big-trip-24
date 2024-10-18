@@ -51,12 +51,12 @@ function handleNewPointButtonClick() {
 
 filterPresenter.init();
 boardPresenter.init();
-
+//pointsModel.init();
+/*
 destinationsModel.init()
   .finally(() => {
     offersModel.init()
       .finally(() => {
-        pointsModel.init()
-          .finally(() => {});
+        pointsModel.init();
       });
-  });
+  });*/

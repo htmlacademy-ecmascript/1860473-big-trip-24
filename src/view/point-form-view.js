@@ -20,9 +20,9 @@ const createPicturesBlockTemplate = (pictures) => `
 `;
 
 function offersList(allOffersType,offerInPoint){
-  const offerInPointId = offerInPoint ? offerInPoint.map((item) => (item.id)) : [];
+
   return allOffersType.map((item) =>`<div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="event-offer-${item.id}" ${offerInPointId.includes(item.id) ? 'checked=""' : ''}>
+                        <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="event-offer-${item.id}" ${offerInPoint.includes(item.id) ? 'checked=""' : ''}>
                         <label class="event__offer-label" for="${item.id}">
                           <span class="event__offer-title">${item.title}</span>
                           +€&nbsp;
@@ -31,9 +31,9 @@ function offersList(allOffersType,offerInPoint){
                       </div>`).join('');
 }
 
-function createEditPointTemplate(point, offer, isNewPoint, destinationTypes) {
+function createEditPointTemplate(point, isNewPoint, destinationTypes) {
 
-  const {basePrice, dateFrom, dateTo, type, typesOffers, typeDestinations, isDisabled, isSaving, isDeleting} = point;
+  const {basePrice, dateFrom, dateTo, type, offers, typesOffers, typeDestinations, isDisabled, isSaving, isDeleting} = point;
 
   const {destination} = destinationTypes;
 
@@ -93,12 +93,12 @@ function createEditPointTemplate(point, offer, isNewPoint, destinationTypes) {
                   <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''} >${isNewPoint ? 'Cancel' : deleteButton }</button>
                 </header>
                 <section class="event__details">
-                ${offersList(typesOffers.offers,offer).length > 0 ? `
+                ${offersList(typesOffers.offers,offers).length > 0 ? `
                   <section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
-                      ${offersList(typesOffers.offers,offer)}
+                      ${offersList(typesOffers.offers,offers)}
                     </div>
                   </section>` : ''}
                   ${typeDestinations ? `
@@ -120,7 +120,6 @@ function createEditPointTemplate(point, offer, isNewPoint, destinationTypes) {
 
 export default class PointForm extends AbstractStatefulView {
   #allOffers = null;
-  #offers = null;
   #destinations = null;
   #handleFormSubmit = null;
   #handleCancelClick = null;
@@ -131,7 +130,7 @@ export default class PointForm extends AbstractStatefulView {
   #datePickerEnd = null;
   #isNewPoint = null;
 
-  constructor({point, allOffers, offers, destinations, isNewPoint, onFormSubmit, onCancelClick, onDeleteClick}){
+  constructor({point, allOffers, destinations, isNewPoint, onFormSubmit, onCancelClick, onDeleteClick}){
     super();
     this.#allOffersTypes = allOffers;
     this.#isNewPoint = isNewPoint;
@@ -140,16 +139,14 @@ export default class PointForm extends AbstractStatefulView {
     this.#destinations = this.#destinationsTypes.getDestinationById(point.destination);
     this._setState(PointForm.parsePointToState(point, this.#allOffers, this.#destinations));
 
-    this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCancelClick = onCancelClick;
     this.#handleDeleteClick = onDeleteClick;
-
     this._restoreHandlers();
   }
 
   get template() {
-    return createEditPointTemplate(this._state, this.#offers, this.#isNewPoint, this.#destinationsTypes);
+    return createEditPointTemplate(this._state, this.#isNewPoint, this.#destinationsTypes);
   }
 
   removeElement() {
@@ -171,6 +168,9 @@ export default class PointForm extends AbstractStatefulView {
     this.element.querySelector('#event-destination-1').addEventListener('change',this.#destinationChangeHandler);
     this.element.querySelector('.event__type-list').addEventListener('click',this.#offerChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change',this.#priceChangeHandler);
+    if ( this.element.querySelector('.event__available-offers') ) {
+      this.element.querySelector('.event__available-offers').addEventListener('click',this.#offerItemChangeHandler);
+    }
     if (this.#isNewPoint){
       this.element.querySelector('.event__reset-btn').addEventListener('click',this.#cancelClickHandler);
     } else {
@@ -194,14 +194,6 @@ export default class PointForm extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
 
-    const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    const offersCheckedId = offersChecked.map((offers) => (offers.id));
-
-    if (JSON.stringify(this._state.offers) !== JSON.stringify(offersCheckedId)){
-      this.updateElement({
-        offers : offersCheckedId,
-      });
-    }
     this.#handleFormSubmit(PointForm.parseStateToPoint(this._state));
   };
 
@@ -234,6 +226,26 @@ export default class PointForm extends AbstractStatefulView {
     this.updateElement({
       basePrice: newPrice,
     });
+  };
+
+
+  #offerItemChangeHandler = (evt) => {
+    evt.preventDefault();
+    const offerElement = evt.target.closest('.event__offer-selector');
+    if (offerElement){
+    if (offerElement.querySelector('.event__offer-checkbox:checked')){
+      offerElement.querySelector('.event__offer-checkbox').checked = false;
+    } else {
+      offerElement.querySelector('.event__offer-checkbox').checked = true;
+    }
+    const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+
+    const offersCheckedId = offersChecked.map((offers) => (offers.id));
+    this.updateElement({
+      offers : offersCheckedId,
+    });
+  }
+
   };
 
 

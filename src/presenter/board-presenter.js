@@ -6,7 +6,7 @@ import SortView from '../view/sort-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
 import { sortPointDate, sortPointTime, sortPointPrice } from '../utils/point.js';
-import { SortType, UserAction, UpdateType, FilterType, DEFAULT_FILTER_TYPE } from '../const.js';
+import { SortType, UserAction, UpdateType, FilterType, DEFAULT_FILTER_TYPE, LoadType } from '../const.js';
 import {filter} from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import LoadingView from '../view/loading-view.js';
@@ -31,7 +31,13 @@ export default class BoardPresenter {
   #filterTypes = FilterType.EVERYTHING;
   #newPointPresenter = null;
   #listViewComponent = new ListView();
-  #loadingComponent = new LoadingView();
+
+  #loadingComponent = new LoadingView({
+    loadType: LoadType.LOADING
+  });
+  #failedComponent = new LoadingView({
+    loadType: LoadType.FAILED
+  });
   #isLoading = true;
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
@@ -132,18 +138,26 @@ export default class BoardPresenter {
         remove(this.#loadingComponent);
         this.#renderBoard();
         break;
+      case UpdateType.FAILED:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderLoading(LoadType.FAILED);
+        break;
     }
   };
 
-  init() {
+  async init() {
 
     const siteHeaderTopElement = document.querySelector('.trip-main');
-
 
     render(new HeaderView(), siteHeaderTopElement, RenderPosition.AFTERBEGIN);
     render(this.#newPointButtonComponent, siteHeaderTopElement, RenderPosition.BEFOREEND);
 
     this.#renderBoard();
+
+    await this.#destinationsModel.init();
+    await this.#offersModel.init();
+    await this.#pointsModel.init();
 
   }
 
@@ -174,8 +188,15 @@ export default class BoardPresenter {
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
-  #renderLoading(){
-    render(this.#loadingComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+  #renderLoading(status){
+    switch (status) {
+      case LoadType.LOADING:
+        render(this.#loadingComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+        break;
+      case LoadType.FAILED:
+        render(this.#failedComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+        break;
+    }
   }
 
   #renderItem(point,offers,destinations, allOffers){
@@ -225,7 +246,7 @@ export default class BoardPresenter {
     render(this.#listViewComponent, this.#boardContainer);
 
     if (this.#isLoading){
-      this.#renderLoading();
+      this.#renderLoading(LoadType.LOADING);
       return;
     }
 
@@ -233,6 +254,7 @@ export default class BoardPresenter {
       this.#renderNoPoints();
       return;
     }
+
     this.#renderSort();
     for (let i = 0; i < this.points.length; i++) {
       const offers = [...this.#offersModel.getOfferById(this.points[i].type,this.points[i].offers)];

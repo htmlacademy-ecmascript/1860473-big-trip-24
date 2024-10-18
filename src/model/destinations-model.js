@@ -1,9 +1,13 @@
-export default class DestinationsModel {
+import Observable from '../framework/observable.js';
+import { UpdateType } from '../const.js';
+
+export default class DestinationsModel extends Observable {
   #pointsApiService = null;
 
   #destination = [];
 
   constructor({pointsApiService}){
+    super();
     this.#pointsApiService = pointsApiService;
   }
 
@@ -16,7 +20,7 @@ export default class DestinationsModel {
       const destination = await this.#pointsApiService.destinations;
       this.#destination = destination;
     } catch(err){
-      return this.#destination;
+      this._notify(UpdateType.FAILED);
     }
 
   }

@@ -1,8 +1,12 @@
-export default class OffersModel {
+import Observable from '../framework/observable.js';
+import { UpdateType } from '../const.js';
+
+export default class OffersModel extends Observable{
   #pointsApiService = null;
   #offer = [];
 
   constructor({pointsApiService}){
+    super();
     this.#pointsApiService = pointsApiService;
   }
 
@@ -15,7 +19,7 @@ export default class OffersModel {
       const offers = await this.#pointsApiService.offers;
       this.#offer = offers;
     } catch(err){
-      return this.#offer;
+      this._notify(UpdateType.FAILED);
     }
   }
 
