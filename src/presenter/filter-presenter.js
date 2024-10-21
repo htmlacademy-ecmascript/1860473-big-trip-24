@@ -1,4 +1,4 @@
-import {render, replace, remove} from '../framework/render.js';
+import {RenderPosition, render, replace, remove} from '../framework/render.js';
 import FilterView from '../view/filter-view.js';
 import {filter} from '../utils/filter.js';
 import {FilterType, UpdateType} from '../const.js';
@@ -39,7 +39,7 @@ export default class FilterPresenter {
     });
 
     if (prevFilterComponent === null) {
-      render(this.#filterComponent, this.#filterContainer);
+      render(this.#filterComponent, this.#filterContainer, RenderPosition.BEFOREBEGIN);
       return;
     }
 
